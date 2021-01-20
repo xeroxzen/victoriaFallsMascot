@@ -54,6 +54,10 @@ app.post("/conversations", express.json(), (req, res) => {
     agent.add("Goodbye, see you next time.");
   }
 
+  function coronavirusUpdatesCancel(agent) {
+    agent.add("Goodbye, see you next time.");
+  }
+
   // let's setup intentMaps
   var intentMap = new Map();
   intentMap.set("webhookDemo", webhookDemo);
