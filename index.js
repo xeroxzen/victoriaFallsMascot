@@ -71,7 +71,7 @@ app.post("/conversations", express.json(), (req, res) => {
   }
 
   function coronavirusCountryYes(agent) {
-    agent.add("Which country did you visit");
+    agent.add("Which country did you visit?");
   }
 
   function coronavirusCountryNo(agent) {
@@ -79,6 +79,7 @@ app.post("/conversations", express.json(), (req, res) => {
       "Have you come in contact with someone who later tested positive for COVID-19?"
     );
   }
+
   function coronavirusCountryNoGetPhone(agent) {
     agent.add(
       "May we have your phone number so our Rapid Response Team can contact you immediately."
