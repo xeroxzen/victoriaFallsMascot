@@ -9,6 +9,7 @@ const dialogflow = require("dialogflow-fulfillment");
 var admin = require("firebase-admin");
 
 var serviceAccount = require("./config/victoriafallsmascot-imwo-firebase-adminsdk-2hs88-562506bac3.json");
+
 try {
   admin.initializeApp({
     credential: admin.credential.cert(serviceAccount),
@@ -18,3 +19,6 @@ try {
 } catch (err) {
   console.log(`Error here ${err}`);
 }
+
+var db = admin.firestore();
+db.settings({ ignoreUndefinedProperties: true });
