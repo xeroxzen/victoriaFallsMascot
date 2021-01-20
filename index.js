@@ -62,6 +62,10 @@ app.post("/conversations", express.json(), (req, res) => {
     agent.add("Goodbye, see you next time.");
   }
 
+  function disclaimerNo(agent) {
+    agent.add("Good bye");
+  }
+
   // let's setup intentMaps
   var intentMap = new Map();
   intentMap.set("webhookDemo", webhookDemo);
@@ -69,6 +73,7 @@ app.post("/conversations", express.json(), (req, res) => {
   intentMap.set("coronavirusProtectionCancel", coronavirusProtectionCancel);
   intentMap.set("coronavirusUpdatesCancel", coronavirusUpdatesCancel);
   intentMap.set("coronavirusHelpCancel", coronavirusHelpCancel);
+  intentMap.set("disclaimerNo", disclaimerNo);
 
   // intentmap request handling
   agent.handleRequest(intentMap);
