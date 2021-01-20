@@ -22,3 +22,17 @@ try {
 
 var db = admin.firestore();
 db.settings({ ignoreUndefinedProperties: true });
+
+// let's define a port we could use
+const port = process.env.PORT || 3000;
+
+app.get("/", (req, res) => {
+  res.send("yup, the server is live.");
+});
+
+app.post("/conversations", express.json(), (req, res) => {
+  const agent = new dialogflow.WebhookClient({
+    request: req,
+    response: res,
+  });
+});
