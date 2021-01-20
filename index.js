@@ -58,12 +58,17 @@ app.post("/conversations", express.json(), (req, res) => {
     agent.add("Goodbye, see you next time.");
   }
 
+  function coronavirusHelpCancel(agent) {
+    agent.add("Goodbye, see you next time.");
+  }
+
   // let's setup intentMaps
   var intentMap = new Map();
   intentMap.set("webhookDemo", webhookDemo);
   intentMap.set("coronavirusInfoCancel", coronavirusInfoCancel);
   intentMap.set("coronavirusProtectionCancel", coronavirusProtectionCancel);
   intentMap.set("coronavirusUpdatesCancel", coronavirusUpdatesCancel);
+  intentMap.set("coronavirusHelpCancel", coronavirusHelpCancel);
 
   // intentmap request handling
   agent.handleRequest(intentMap);
