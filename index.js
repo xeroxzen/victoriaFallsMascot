@@ -50,6 +50,7 @@ app.post("/conversations", express.json(), (req, res) => {
   intentMap.set("webhookDemo", webhookDemo);
 
   // intentmap request handling
+  agent.handleRequest(intentMap);
 });
 
 // let's listen
