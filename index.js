@@ -70,15 +70,15 @@ app.post("/conversations", express.json(), (req, res) => {
   //     agent.add("Did you visit any country in the last 7 days?");
   //   }
 
-  function coronavirusCountryYes(agent) {
-    agent.add("Which country did you visit?");
-  }
+  //   function coronavirusCountryYes(agent) {
+  //     agent.add("Which country did you visit?");
+  //   }
 
-  function coronavirusCountryYesNext(agent) {
-    agent.add(
-      "May we have your phone number so our Rapid Response Team can contact you immediately."
-    );
-  }
+  //   function coronavirusCountryYesNext(agent) {
+  //     agent.add(
+  //       "May we have your phone number so our Rapid Response Team can contact you immediately."
+  //     );
+  //   }
 
   //   function coronavirusCountryNo(agent) {
   //     agent.add(
@@ -86,11 +86,11 @@ app.post("/conversations", express.json(), (req, res) => {
   //     );
   //   }
 
-//   function coronavirusCountryNoGetPhone(agent) {
-//     agent.add(
-//       "May we have your phone number so our Rapid Response Team can contact you immediately."
-//     );
-//   }
+  //   function coronavirusCountryNoGetPhone(agent) {
+  //     agent.add(
+  //       "May we have your phone number so our Rapid Response Team can contact you immediately."
+  //     );
+  //   }
 
   //   function coronavirusCountryNoGetPhone2(agent) {
   //     agent.add(
