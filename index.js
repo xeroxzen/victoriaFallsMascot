@@ -74,6 +74,12 @@ app.post("/conversations", express.json(), (req, res) => {
     agent.add("Which country did you visit?");
   }
 
+  function coronavirusCountryYesNext(agent) {
+    agent.add(
+      "May we have your phone number so our Rapid Response Team can contact you immediately."
+    );
+  }
+
   function coronavirusCountryNo(agent) {
     agent.add(
       "Have you come in contact with someone who later tested positive for COVID-19?"
@@ -112,6 +118,7 @@ app.post("/conversations", express.json(), (req, res) => {
   intentMap.set("coronavirusCountryNo - yes", coronavirusCountryNoGetPhone);
   intentMap.set("coronavirusCountryNo - no", coronavirusCountryNoGetPhone2);
   intentMap.set("coronavirusCountryNo - custom", coronavirusContactNotSure);
+  intentMap.set("coronavirusCountryYes - next", coronavirusCountryYesNext);
 
   // intentmap request handling
   agent.handleRequest(intentMap);
