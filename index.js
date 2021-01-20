@@ -40,8 +40,8 @@ app.post("/conversations", express.json(), (req, res) => {
 
   // function to test if it works
   function webhookDemo(agent) {
-    agent.add("Server is live. Congrats");
-    // agent.add(`We are live from port ${port}`);
+    // agent.add("Server is live. Congrats");
+    agent.add(`We are live from port ${port}. Congrats`);
     console.log(`Live from port ${port}`);
   }
 
