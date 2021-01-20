@@ -79,6 +79,11 @@ app.post("/conversations", express.json(), (req, res) => {
       "Have you come in contact with someone who later tested positive for COVID-19?"
     );
   }
+  function coronavirusCountryNoGetPhone(agent) {
+    agent.add(
+      "May we have your phone number so our Rapid Response Team can contact you immediately."
+    );
+  }
 
   // let's setup intentMaps
   var intentMap = new Map();
@@ -91,6 +96,7 @@ app.post("/conversations", express.json(), (req, res) => {
   intentMap.set("coronavirusCountry", coronavirusCountry);
   intentMap.set("coronavirusCountryYes", coronavirusCountryYes);
   intentMap.set("coronavirusCountryNo", coronavirusCountryNo);
+  intentMap.set("coronavirusCountryNo - yes", coronavirusCountryNoGetPhone);
 
   // intentmap request handling
   agent.handleRequest(intentMap);
