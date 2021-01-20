@@ -40,6 +40,12 @@ app.post("/conversations", express.json(), (req, res) => {
   function webhookDemo(agent) {
     agent.add(`We are live from port ${port}`);
   }
+
+  // let's setup intentMaps
+  var intentMap = new Map();
+  intentMap.set("webhookDemo", webhookDemo);
+
+  // intentmap request handling
 });
 
 // let's listen
