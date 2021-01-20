@@ -112,13 +112,13 @@ app.post("/conversations", express.json(), (req, res) => {
   intentMap.set("coronavirusUpdatesCancel", coronavirusUpdatesCancel);
   intentMap.set("coronavirusHelpCancel", coronavirusHelpCancel);
   intentMap.set("disclaimerNo", disclaimerNo);
-    intentMap.set("coronavirusPhone", coronavirusPhone);
-  intentMap.set("coronavirusCountryYes", coronavirusCountryYes);
+  intentMap.set("coronavirusPhone", coronavirusPhone);
+  //   intentMap.set("coronavirusCountryYes", coronavirusCountryYes);
   //   intentMap.set("coronavirusCountryNo", coronavirusCountryNo);
-  intentMap.set("coronavirusCountryNo - yes", coronavirusCountryNoGetPhone);
+  //   intentMap.set("coronavirusCountryNo - yes", coronavirusCountryNoGetPhone);
   //   intentMap.set("coronavirusCountryNo - no", coronavirusCountryNoGetPhone2);
   //   intentMap.set("coronavirusCountryNo - custom", coronavirusContactNotSure);
-  intentMap.set("coronavirusCountryYes - next", coronavirusCountryYesNext);
+  //   intentMap.set("coronavirusCountryYes - next", coronavirusCountryYesNext);
 
   // intentmap request handling
   agent.handleRequest(intentMap);
