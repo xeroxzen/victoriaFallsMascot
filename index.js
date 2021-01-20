@@ -35,4 +35,14 @@ app.post("/conversations", express.json(), (req, res) => {
     request: req,
     response: res,
   });
+
+  // function to test if it works
+  function webhookDemo(agent) {
+    agent.add(`We are live from port ${port}`);
+  }
+});
+
+app.listen(port, () => {
+  console.log(`Server is live at port ${port}`);
+  console.log(`Press Ctrl + C to abort the connection.`);
 });
