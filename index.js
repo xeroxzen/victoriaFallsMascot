@@ -42,6 +42,7 @@ app.post("/conversations", express.json(), (req, res) => {
   }
 });
 
+// let's listen
 app.listen(port, () => {
   console.log(`Server is live at port ${port}`);
   console.log(`Press Ctrl + C to abort the connection.`);
