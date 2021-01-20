@@ -13,6 +13,7 @@ var serviceAccount = require("./config/victoriafallsmascot-imwo-firebase-adminsd
 try {
   admin.initializeApp({
     credential: admin.credential.cert(serviceAccount),
+    databaseURL: "https://victoriafallsmascot-imwo.firebaseio.com",
   });
 
   console.log("Connected to Database");
@@ -38,7 +39,9 @@ app.post("/conversations", express.json(), (req, res) => {
 
   // function to test if it works
   function webhookDemo(agent) {
+    agent.add("Server is live. Congrats");
     agent.add(`We are live from port ${port}`);
+    console.log(`Live from port ${port}`);
   }
 
   // let's setup intentMaps
