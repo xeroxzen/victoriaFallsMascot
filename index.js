@@ -80,11 +80,11 @@ app.post("/conversations", express.json(), (req, res) => {
     );
   }
 
-  function coronavirusCountryNo(agent) {
-    agent.add(
-      "Have you come in contact with someone who later tested positive for COVID-19?"
-    );
-  }
+  //   function coronavirusCountryNo(agent) {
+  //     agent.add(
+  //       "Have you come in contact with someone who later tested positive for COVID-19?"
+  //     );
+  //   }
 
   function coronavirusCountryNoGetPhone(agent) {
     agent.add(
@@ -114,7 +114,7 @@ app.post("/conversations", express.json(), (req, res) => {
   intentMap.set("disclaimerNo", disclaimerNo);
   //   intentMap.set("coronavirusCountry", coronavirusCountry);
   intentMap.set("coronavirusCountryYes", coronavirusCountryYes);
-  intentMap.set("coronavirusCountryNo", coronavirusCountryNo);
+  //   intentMap.set("coronavirusCountryNo", coronavirusCountryNo);
   intentMap.set("coronavirusCountryNo - yes", coronavirusCountryNoGetPhone);
   //   intentMap.set("coronavirusCountryNo - no", coronavirusCountryNoGetPhone2);
   //   intentMap.set("coronavirusCountryNo - custom", coronavirusContactNotSure);
