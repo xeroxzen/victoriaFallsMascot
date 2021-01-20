@@ -6,4 +6,17 @@ const app = express();
 const dialogflow = require("dialogflow-fulfillment");
 
 //security credentials
-const admin = require("firebase-admin");
+var admin = require("firebase-admin");
+
+var serviceAccount = require("path/to/serviceAccountKey.json");
+try {
+    admin.initializeApp({
+      credential: admin.credential.cert(serviceAccount),
+    });
+
+    console.log("Connected to Database");
+} catch (err) {
+    console.log(`Error here ${err}`)
+}
+
+
