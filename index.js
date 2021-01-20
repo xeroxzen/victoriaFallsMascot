@@ -66,6 +66,10 @@ app.post("/conversations", express.json(), (req, res) => {
     agent.add("Good bye");
   }
 
+  function coronavirusCountry(agent) {
+    agent.add("Did you visit any country in the last 7 days?");
+  }
+
   // let's setup intentMaps
   var intentMap = new Map();
   intentMap.set("webhookDemo", webhookDemo);
@@ -74,6 +78,7 @@ app.post("/conversations", express.json(), (req, res) => {
   intentMap.set("coronavirusUpdatesCancel", coronavirusUpdatesCancel);
   intentMap.set("coronavirusHelpCancel", coronavirusHelpCancel);
   intentMap.set("disclaimerNo", disclaimerNo);
+  intentMap.set("coronavirusCountry", coronavirusCountry);
 
   // intentmap request handling
   agent.handleRequest(intentMap);
