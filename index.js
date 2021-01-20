@@ -85,6 +85,12 @@ app.post("/conversations", express.json(), (req, res) => {
     );
   }
 
+  function coronavirusCountryNoGetPhone2(agent) {
+    agent.add(
+      "May we have your phone number so our Rapid Response Team can contact you immediately."
+    );
+  }
+
   // let's setup intentMaps
   var intentMap = new Map();
   intentMap.set("webhookDemo", webhookDemo);
@@ -97,6 +103,7 @@ app.post("/conversations", express.json(), (req, res) => {
   intentMap.set("coronavirusCountryYes", coronavirusCountryYes);
   intentMap.set("coronavirusCountryNo", coronavirusCountryNo);
   intentMap.set("coronavirusCountryNo - yes", coronavirusCountryNoGetPhone);
+  intentMap.set("coronavirusCountryNo - no", coronavirusCountryNoGetPhone2);
 
   // intentmap request handling
   agent.handleRequest(intentMap);
