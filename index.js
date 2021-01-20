@@ -62,6 +62,8 @@ app.post("/conversations", express.json(), (req, res) => {
   var intentMap = new Map();
   intentMap.set("webhookDemo", webhookDemo);
   intentMap.set("coronavirusInfoCancel", coronavirusInfoCancel);
+  intentMap.set("coronavirusProtectionCancel", coronavirusProtectionCancel);
+  intentMap.set("coronavirusUpdatesCancel", coronavirusUpdatesCancel);
 
   // intentmap request handling
   agent.handleRequest(intentMap);
