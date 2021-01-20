@@ -66,18 +66,18 @@ app.post("/conversations", express.json(), (req, res) => {
     agent.add("Good bye");
   }
 
+  function coronavirusPhone(agent) {
+    agent.add(
+      "May we have your phone number so our Rapid Response Team can contact you immediately."
+    );
+  }
+
   //   function coronavirusCountry(agent) {
   //     agent.add("Did you visit any country in the last 7 days?");
   //   }
 
   //   function coronavirusCountryYes(agent) {
   //     agent.add("Which country did you visit?");
-  //   }
-
-  //   function coronavirusCountryYesNext(agent) {
-  //     agent.add(
-  //       "May we have your phone number so our Rapid Response Team can contact you immediately."
-  //     );
   //   }
 
   //   function coronavirusCountryNo(agent) {
@@ -112,7 +112,7 @@ app.post("/conversations", express.json(), (req, res) => {
   intentMap.set("coronavirusUpdatesCancel", coronavirusUpdatesCancel);
   intentMap.set("coronavirusHelpCancel", coronavirusHelpCancel);
   intentMap.set("disclaimerNo", disclaimerNo);
-  //   intentMap.set("coronavirusCountry", coronavirusCountry);
+    intentMap.set("coronavirusPhone", coronavirusPhone);
   intentMap.set("coronavirusCountryYes", coronavirusCountryYes);
   //   intentMap.set("coronavirusCountryNo", coronavirusCountryNo);
   intentMap.set("coronavirusCountryNo - yes", coronavirusCountryNoGetPhone);
