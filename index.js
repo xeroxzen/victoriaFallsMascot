@@ -86,11 +86,11 @@ app.post("/conversations", express.json(), (req, res) => {
   //     );
   //   }
 
-  function coronavirusCountryNoGetPhone(agent) {
-    agent.add(
-      "May we have your phone number so our Rapid Response Team can contact you immediately."
-    );
-  }
+//   function coronavirusCountryNoGetPhone(agent) {
+//     agent.add(
+//       "May we have your phone number so our Rapid Response Team can contact you immediately."
+//     );
+//   }
 
   //   function coronavirusCountryNoGetPhone2(agent) {
   //     agent.add(
