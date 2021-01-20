@@ -45,9 +45,15 @@ app.post("/conversations", express.json(), (req, res) => {
     console.log(`Live from port ${port}`);
   }
 
+  // Many Cancel functions
+  function coronavirusInfoCancel(agent) {
+    agent.add("Goodbye, see you next time.");
+  }
+
   // let's setup intentMaps
   var intentMap = new Map();
   intentMap.set("webhookDemo", webhookDemo);
+  intentMap.set("coronavirusInfoCancel", coronavirusInfoCancel);
 
   // intentmap request handling
   agent.handleRequest(intentMap);
