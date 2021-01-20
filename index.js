@@ -4,6 +4,7 @@
 const express = require("express");
 const app = express();
 const dialogflow = require("dialogflow-fulfillment");
+const { Card, Suggestion } = require("dialogflow-fulfillment");
 
 //security credentials
 var admin = require("firebase-admin");
@@ -40,7 +41,7 @@ app.post("/conversations", express.json(), (req, res) => {
   // function to test if it works
   function webhookDemo(agent) {
     agent.add("Server is live. Congrats");
-    agent.add(`We are live from port ${port}`);
+    // agent.add(`We are live from port ${port}`);
     console.log(`Live from port ${port}`);
   }
 
