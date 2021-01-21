@@ -33,10 +33,10 @@ app.get("/", (req, res) => {
   res.send("yup, the server is live.");
 });
 
-app.post("/conversations", express.json(), (request, response) => {
+app.post("/conversations", express.json(), (req, res) => {
   const agent = new dfff.WebhookClient({
-    request: request,
-    response: response,
+    request: req,
+    response: res,
   });
 
   // function to test if it works
@@ -103,12 +103,13 @@ app.post("/conversations", express.json(), (request, response) => {
     //we need to save some data here
     // data to be saved
     // age range, gender, symptoms, phone number, time
-    let parameters = request.body.queryResult.parameters;
+    let parameters = req.body.queryResult.parameters;
 
-    var ageRange = parameters[ageGroups]; //agent.context.get("covidGender").parameters.ageGroups;
-    var gender = parameters[gender]; //agent.context.get("covidSymptoms").parameters.gender;
-    var symptoms = parameters[symptoms]; //agent.context.get("coronavirusPhone-followup").parameters.symptoms;
-    var phone = parameters[phone]; //agent.context.get("capture-phone-number").parameters.phone;
+    var ageRange = agent.context.get("covidGender").parameters.ageGroups;
+    var gender = agent.context.get("covidSymptoms").parameters.gender;
+    var symptoms = agent.context.get("coronavirusPhone-followup").parameters
+      .symptoms;
+    var phone = agent.context.get("capture-phone-number").parameters.phone;
 
     // human readable date
     // const dateObject = new Date();
