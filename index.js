@@ -103,11 +103,11 @@ app.post("/conversations", express.json(), (req, res) => {
     // data to be saved
     // age range, gender, symptoms, phone number, time
 
-    var ageRange = agent.context.get("covidGender").parameters.ageGroups;
-    var gender = agent.context.get("covidSymptoms").parameters.gender;
-    var symptoms = agent.context.get("coronavirusPhone-followup").parameters
+    var ageRange = agent.context.get("covidGender").params.ageGroups;
+    var gender = agent.context.get("covidSymptoms").params.gender;
+    var symptoms = agent.context.get("coronavirusPhone-followup").params
       .symptoms;
-    var phone = agent.context.get("capture-phone-number").parameters.phone;
+    var phone = agent.context.get("capture-phone-number").params.phone;
 
     // human readable date
     // const dateObject = new Date();
