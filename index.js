@@ -101,10 +101,35 @@ app.post("/conversations", express.json(), (req, res) => {
   function saveToDB(agent) {
     //we need to save some data here
     // data to be saved
-    // age range, gender, symptoms, phone number
+    // age range, gender, symptoms, phone number, time
+
+    var ageRange = agent.context.get().parameters.ageRange;
+    var gender = agent.context.get().parameters.gender;
+    var symptoms = agent.context.get().parameters.symptoms;
+    var phone = agent.context.get().parameters.phone;
+
+    // human readable date
+    // const dateObject = new Date();
+
     agent.add(
       "Thank you for your cooperation. \n\nIn the meantime we advise you to remain at home in self-isolation. Our Rapid Response Team will contact you shortly."
     );
+
+    // save to db
+    return db
+      .collection("users")
+      .add({
+        age: ageRange,
+        sex: gender,
+        symptoms: symptoms,
+        phone: phone,
+      })
+      .then(
+        (ref) =>
+          // fetching free slots
+          console.log("Saved to DB"),
+        agent("We will contact you soon.")
+      );
   }
 
   // let's setup intentMaps
