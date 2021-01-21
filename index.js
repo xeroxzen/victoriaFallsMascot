@@ -102,6 +102,7 @@ app.post("/conversations", express.json(), (req, res) => {
     //we need to save some data here
     // data to be saved
     // age range, gender, symptoms, phone number, time
+    let parameters = intent.params.parameter;
 
     var ageRange = agent.context.get("covidGender").parameters.ageGroups;
     var gender = agent.context.get("covidSymptoms").parameters.gender;
