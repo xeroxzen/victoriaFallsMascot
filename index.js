@@ -27,15 +27,16 @@ db.settings({ ignoreUndefinedProperties: true });
 
 // let's define a port we could use
 const port = process.env.PORT || 3000;
+process.eventNames.DEBUG = "dialogflow:debug";
 
 app.get("/", (req, res) => {
   res.send("yup, the server is live.");
 });
 
-app.post("/conversations", express.json(), (req, res) => {
+app.post("/conversations", express.json(), (request, response) => {
   const agent = new dfff.WebhookClient({
-    request: req,
-    response: res,
+    request: request,
+    response: response,
   });
 
   // function to test if it works
