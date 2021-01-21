@@ -99,6 +99,10 @@ app.post("/conversations", express.json(), (req, res) => {
   //   }
 
   function saveToDB(agent) {
+
+      //we need to save some data here
+      // data to be saved
+      // age range, gender, symptoms, phone number
     agent.add(
       "Thank you for your cooperation. \nIn the meantime we advise you to remain at home in self-isolation. Our Rapid Response Team will contact you shortly."
     );
