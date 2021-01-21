@@ -72,9 +72,9 @@ app.post("/conversations", express.json(), (req, res) => {
     );
   }
 
-  //   function coronavirusCountry(agent) {
-  //     agent.add("Did you visit any country in the last 7 days?");
-  //   }
+  function confirmDetailsCancel(agent) {
+    agent.add("Good bye! Have yourself a good day.");
+  }
 
   //   function coronavirusCountryYes(agent) {
   //     agent.add("Which country did you visit?");
@@ -103,10 +103,11 @@ app.post("/conversations", express.json(), (req, res) => {
     // data to be saved
     // age range, gender, symptoms, phone number, time
 
-    var ageRange = agent.context.get().parameters.ageRange;
-    var gender = agent.context.get().parameters.gender;
-    var symptoms = agent.context.get().parameters.symptoms;
-    var phone = agent.context.get().parameters.phone;
+    var ageRange = agent.context.get("covidGender").parameters.ageGroups;
+    var gender = agent.context.get("covidSymptoms").parameters.gender;
+    var symptoms = agent.context.get("coronavirusPhone-followup").parameters
+      .symptoms;
+    var phone = agent.context.get("capture-phone-number").parameters.phone;
 
     // human readable date
     // const dateObject = new Date();
@@ -117,7 +118,7 @@ app.post("/conversations", express.json(), (req, res) => {
 
     // save to db
     return db
-      .collection("users")
+      .collection("Diagnosis")
       .add({
         age: ageRange,
         sex: gender,
@@ -128,7 +129,7 @@ app.post("/conversations", express.json(), (req, res) => {
         (ref) =>
           // fetching free slots
           console.log("Saved to DB"),
-        agent("We will contact you soon.")
+        agent("Take care!.")
       );
   }
 
@@ -142,7 +143,7 @@ app.post("/conversations", express.json(), (req, res) => {
   intentMap.set("disclaimerNo", disclaimerNo);
   intentMap.set("coronavirusPhone", coronavirusPhone);
   intentMap.set("rapidResponse", saveToDB);
-  //   intentMap.set("coronavirusCountryNo", coronavirusCountryNo);
+  intentMap.set("confirmDetailsCancel", confirmDetailsCancel);
   //   intentMap.set("coronavirusCountryNo - yes", coronavirusCountryNoGetPhone);
   //   intentMap.set("coronavirusCountryNo - no", coronavirusCountryNoGetPhone2);
   //   intentMap.set("coronavirusCountryNo - custom", coronavirusContactNotSure);
