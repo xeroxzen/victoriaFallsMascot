@@ -3,7 +3,7 @@
 
 const express = require("express");
 const app = express();
-const dialogflow = require("dialogflow-fulfillment");
+const dfff = require("dialogflow-fulfillment");
 const { Card, Suggestion } = require("dialogflow-fulfillment");
 
 //security credentials
@@ -33,7 +33,7 @@ app.get("/", (req, res) => {
 });
 
 app.post("/conversations", express.json(), (req, res) => {
-  const agent = new dialogflow.WebhookClient({
+  const agent = new dfff.WebhookClient({
     request: req,
     response: res,
   });
