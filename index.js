@@ -99,6 +99,12 @@ app.post("/conversations", express.json(), (req, res) => {
   //     );
   //   }
 
+  function rapidResponse(agent) {
+    agent.add(
+      "Thank you for your cooperation. \n\nIn the meantime we advise you to remain at home in self-isolation. Our Rapid Response Team will contact you shortly."
+    );
+  }
+
   function saveToDB(agent) {
     //we need to save some data here
     // data to be saved
@@ -144,7 +150,7 @@ app.post("/conversations", express.json(), (req, res) => {
   intentMap.set("coronavirusHelpCancel", coronavirusHelpCancel);
   intentMap.set("disclaimerNo", disclaimerNo);
   intentMap.set("coronavirusPhone", coronavirusPhone);
-  intentMap.set("rapidResponse", saveToDB);
+  intentMap.set("rapidResponse", rapidResponse);
   intentMap.set("confirmDetailsCancel", confirmDetailsCancel);
   //   intentMap.set("coronavirusCountryNo - yes", coronavirusCountryNoGetPhone);
   //   intentMap.set("coronavirusCountryNo - no", coronavirusCountryNoGetPhone2);
