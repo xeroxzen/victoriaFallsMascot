@@ -102,13 +102,12 @@ app.post("/conversations", express.json(), (req, res) => {
     //we need to save some data here
     // data to be saved
     // age range, gender, symptoms, phone number, time
-    let parameters = intent.params.parameter;
+    let parameters = request.body.queryResult.parameters;
 
-    var ageRange = agent.context.get("covidGender").parameters.ageGroups;
-    var gender = agent.context.get("covidSymptoms").parameters.gender;
-    var symptoms = agent.context.get("coronavirusPhone-followup").parameters
-      .symptoms;
-    var phone = agent.context.get("capture-phone-number").parameters.phone;
+    var ageRange = parameters[ageGroups]; //agent.context.get("covidGender").parameters.ageGroups;
+    var gender = parameters[gender]; //agent.context.get("covidSymptoms").parameters.gender;
+    var symptoms = parameters[symptoms]; //agent.context.get("coronavirusPhone-followup").parameters.symptoms;
+    var phone = parameters[phone]; //agent.context.get("capture-phone-number").parameters.phone;
 
     // human readable date
     // const dateObject = new Date();
