@@ -1,5 +1,6 @@
 //Author: Andile Jade Mbele
 //Purpose: nodejs webhook for victoria falls mascot
+"use strict";
 
 const express = require("express");
 const app = express();
@@ -30,6 +31,7 @@ db.settings({ ignoreUndefinedProperties: true });
 // let's define a port we could use
 const port = process.env.PORT || 3000;
 process.env.DEBUG = "dialogflow:debug"; // enables lib debugging statements
+process.unhandledRejections = "strict";
 
 app.get("/", (req, res) => {
   res.send("yup, the server is live.");
