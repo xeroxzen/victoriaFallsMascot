@@ -73,7 +73,7 @@ app.post("/conversations", express.json(), (req, res) => {
 
   function coronavirusPhone(agent) {
     agent.add(
-      "May we have your phone number so our Rapid Response Team can contact you immediately."
+      "May we have your phone number so our Rapid Response Team can contact you immediately. \nExample: 0789488124"
     );
   }
 
