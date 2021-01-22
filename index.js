@@ -85,6 +85,14 @@ app.post("/conversations", express.json(), (req, res) => {
     agent.add("What is your complaint?");
   }
 
+  function saveComplaint(agent) {
+    agent.add("Thank you for your invaluable input.");
+  }
+
+  function saveRecommendation(agent) {
+    agent.add("Thank you for your invaluable recommendation");
+  }
+
   function recommendation(agent) {
     agent.add("What is your recommendation?");
   }
