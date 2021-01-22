@@ -5,6 +5,7 @@ const express = require("express");
 const app = express();
 const dfff = require("dialogflow-fulfillment");
 const { Card, Suggestion } = require("dialogflow-fulfillment");
+const DialogflowApp = require("actions-on-google").DialogflowApp;
 
 //security credentials
 var admin = require("firebase-admin");
@@ -109,13 +110,14 @@ app.post("/conversations", express.json(), (req, res) => {
     //we need to save some data here
     // data to be saved
     // age range, gender, symptoms, phone number, time
-    let parameters = req.body.queryResult.parameters;
+    // let parameters = request.body.queryResult.parameters;
 
-    var ageRange = agent.context.get("covidGender").parameters.ageGroups;
-    var gender = agent.context.get("covidSymptoms").parameters.gender;
-    var symptoms = agent.context.get("coronavirusPhone-followup").parameters
-      .symptoms;
-    var phone = agent.context.get("capture-phone-number").parameters.phone;
+    var ageRange = agent.context.get("covidGender").parameters["ageGroups"];
+    var gender = agent.context.get("covidSymptoms").parameters["gender"];
+    var symptoms = agent.context.get("coronavirusPhone-followup").parameters[
+      "symptoms"
+    ];
+    var phone = agent.context.get("capture-phone-number").parameters["phone"];
 
     // human readable date
     // const dateObject = new Date();
@@ -150,8 +152,9 @@ app.post("/conversations", express.json(), (req, res) => {
   intentMap.set("coronavirusHelpCancel", coronavirusHelpCancel);
   intentMap.set("disclaimerNo", disclaimerNo);
   intentMap.set("coronavirusPhone", coronavirusPhone);
-  intentMap.set("rapidResponse", rapidResponse);
   intentMap.set("confirmDetailsCancel", confirmDetailsCancel);
+  intentMap.set("rapidResponse", rapidResponse);
+  intentMap.set("rapidResponse", saveToDB);
   //   intentMap.set("coronavirusCountryNo - yes", coronavirusCountryNoGetPhone);
   //   intentMap.set("coronavirusCountryNo - no", coronavirusCountryNoGetPhone2);
   //   intentMap.set("coronavirusCountryNo - custom", coronavirusContactNotSure);
