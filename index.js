@@ -3,9 +3,10 @@
 
 const express = require("express");
 const app = express();
-const dfff = require("dialogflow-fulfillment");
+// const dfff = require("dialogflow-fulfillment");
+const { WebhookClient } = require("dialogflow-fulfillment");
 const { Card, Suggestion } = require("dialogflow-fulfillment");
-const DialogflowApp = require("actions-on-google").DialogflowApp;
+// const DialogflowApp = require("actions-on-google").DialogflowApp;
 
 //security credentials
 var admin = require("firebase-admin");
@@ -35,7 +36,7 @@ app.get("/", (req, res) => {
 });
 
 app.post("/conversations", express.json(), (req, res) => {
-  const agent = new dfff.WebhookClient({
+  const agent = new WebhookClient({
     request: req,
     response: res,
   });
@@ -110,7 +111,7 @@ app.post("/conversations", express.json(), (req, res) => {
     //we need to save some data here
     // data to be saved
     // age range, gender, symptoms, phone number, time
-    let parameters = req.body.result.parameters;
+    // let parameters = req.body.result.parameters;
 
     var ageRange = agent.context.get("covidGender").parameters["ageGroups"];
     var gender = agent.context.get("covidSymptoms").parameters["gender"];
