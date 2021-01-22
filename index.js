@@ -157,7 +157,7 @@ app.post("/conversations", express.json(), (req, res) => {
   intentMap.set("coronavirusPhone", coronavirusPhone);
   intentMap.set("confirmDetailsCancel", confirmDetailsCancel);
   intentMap.set("rapidResponse", rapidResponse);
-  intentMap.set("rapidResponse", saveToDB);
+  // intentMap.set("rapidResponse", saveToDB);
   //   intentMap.set("coronavirusCountryNo - yes", coronavirusCountryNoGetPhone);
   //   intentMap.set("coronavirusCountryNo - no", coronavirusCountryNoGetPhone2);
   //   intentMap.set("coronavirusCountryNo - custom", coronavirusContactNotSure);
