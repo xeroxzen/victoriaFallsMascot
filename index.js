@@ -81,6 +81,14 @@ app.post("/conversations", express.json(), (req, res) => {
     agent.add("Good bye! Have yourself a good day.");
   }
 
+  function lodgeComplaint(agent) {
+    agent.add("What is your complaint?");
+  }
+
+  function recommendation(agent) {
+    agent.add("What is your recommendation?");
+  }
+
   //   function coronavirusCountryYes(agent) {
   //     agent.add("Which country did you visit?");
   //   }
@@ -157,6 +165,8 @@ app.post("/conversations", express.json(), (req, res) => {
   intentMap.set("coronavirusPhone", coronavirusPhone);
   intentMap.set("confirmDetailsCancel", confirmDetailsCancel);
   intentMap.set("rapidResponse", rapidResponse);
+  intentMap.set("improveServiceDelivery - Complaint", lodgeComplaint);
+  intentMap.set("improveServiceDelivery - Recommendation", recommendation);
   // intentMap.set("rapidResponse", saveToDB);
   //   intentMap.set("coronavirusCountryNo - yes", coronavirusCountryNoGetPhone);
   //   intentMap.set("coronavirusCountryNo - no", coronavirusCountryNoGetPhone2);
