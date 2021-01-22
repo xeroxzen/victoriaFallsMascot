@@ -29,7 +29,7 @@ db.settings({ ignoreUndefinedProperties: true });
 
 // let's define a port we could use
 const port = process.env.PORT || 3000;
-process.eventNames.DEBUG = "dialogflow:debug";
+process.env.DEBUG = "dialogflow:debug"; // enables lib debugging statements
 
 app.get("/", (req, res) => {
   res.send("yup, the server is live.");
@@ -111,7 +111,7 @@ app.post("/conversations", express.json(), (req, res) => {
     //we need to save some data here
     // data to be saved
     // age range, gender, symptoms, phone number, time
-    // let parameters = req.body.result.parameters;
+    let parameters = req.body;
 
     var ageRange = agent.context.get("covidGender").parameters["ageGroups"];
     var gender = agent.context.get("covidSymptoms").parameters["gender"];
