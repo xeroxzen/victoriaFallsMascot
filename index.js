@@ -86,7 +86,8 @@ app.post("/conversations", express.json(), (request, response) => {
   }
 
   function saveComplaint(agent) {
-    var complaint = agent.context.get("saveComplaint").parameters.complaint;
+    // var complaint = agent.context.get("saveComplaint").parameters.complaint;
+    var complaint = agent.parameters.complaint;
     agent.add("Thank you for your invaluable input.");
 
     // save to db
@@ -108,8 +109,8 @@ app.post("/conversations", express.json(), (request, response) => {
   }
 
   function saveRecommendation(agent) {
-    var recommendation = agent.context.get("saveRecommendation").parameters
-      .recommendation;
+    // var recommendation = agent.context.get("saveRecommendation").parameters.recommendation;
+    var recommendation = agent.parameters.recommendation;
     agent.add("Thank you for your invaluable recommendation");
 
     // save to db
@@ -159,13 +160,17 @@ app.post("/conversations", express.json(), (request, response) => {
     // data to be saved
     // age range, gender, symptoms, phone number, time
 
-    var ageRange = agent.context.get("covidGender").parameters["ageGroups"];
-    var gender = agent.context.get("covidSymptoms").parameters["gender"];
-    var symptoms = agent.context.get("coronavirusPhone-followup").parameters[
-      "symptoms"
-    ];
-    var phone = agent.context.get("capture-phone-number").parameters["phone"];
+    // var ageRange = agent.context.get("covidGender").parameters["ageGroups"];
+    // var gender = agent.context.get("covidSymptoms").parameters["gender"];
+    // var symptoms = agent.context.get("coronavirusPhone-followup").parameters["symptoms"];
 
+    // var phone = agent.context.get("capture-phone-number").parameters["phone"];
+
+    // Simpler format
+    var ageRange = agent.parameters.ageGroups;
+    var gender = agent.parameters.gender;
+    var symptoms = agent.parameters.symptoms;
+    var phone = agent.parameters.phone;
     // human readable date
     // const dateObject = new Date();
 
