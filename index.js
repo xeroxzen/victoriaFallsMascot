@@ -37,11 +37,8 @@ app.get("/", (req, res) => {
   res.send("yup, the server is live.");
 });
 
-app.post("/conversations", express.json(), (req, res) => {
-  const agent = new WebhookClient({
-    request: req,
-    response: res,
-  });
+app.post("/conversations", express.json(), (request, response) => {
+  const agent = new WebhookClient({ request: request, response: response });
 
   //parameters
   // let parameters = agent.request.body;
@@ -89,7 +86,7 @@ app.post("/conversations", express.json(), (req, res) => {
   }
 
   function saveComplaint(agent) {
-    var complaint = agent.context.get("complaint").parameters.complaint;
+    var complaint = agent.context.get("saveComplaint").parameters.complaint;
     agent.add("Thank you for your invaluable input.");
 
     // save to db
@@ -111,7 +108,7 @@ app.post("/conversations", express.json(), (req, res) => {
   }
 
   function saveRecommendation(agent) {
-    var recommendation = agent.context.get("recommendation").parameters
+    var recommendation = agent.context.get("saveRecommendation").parameters
       .recommendation;
     agent.add("Thank you for your invaluable recommendation");
 
