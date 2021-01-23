@@ -26,7 +26,7 @@ try {
 }
 
 var db = admin.firestore();
-// db.settings({ ignoreUndefinedProperties: true });
+db.settings({ ignoreUndefinedProperties: true });
 
 // let's define a port we could use
 const port = process.env.PORT || 3000;
