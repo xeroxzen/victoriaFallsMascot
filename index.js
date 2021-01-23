@@ -44,7 +44,7 @@ app.post("/conversations", express.json(), (req, res) => {
   });
 
   //parameters
-  let parameters = agent.request.body;
+  // let parameters = agent.request.body;
 
   // function to test if it works
   function webhookDemo(agent) {
