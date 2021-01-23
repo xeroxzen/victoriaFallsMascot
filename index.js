@@ -205,12 +205,12 @@ app.post("/conversations", express.json(), (request, response) => {
   intentMap.set("disclaimerNo", disclaimerNo);
   intentMap.set("coronavirusPhone", coronavirusPhone);
   intentMap.set("confirmDetailsCancel", confirmDetailsCancel);
-  intentMap.set("rapidResponse", rapidResponse);
+  // intentMap.set("rapidResponse", rapidResponse);
+  intentMap.set("rapidResponse", saveToDB);
   intentMap.set("improveServiceDelivery - Complaint", lodgeComplaint);
   intentMap.set("improveServiceDelivery - Recommendation", recommendation);
   intentMap.set("saveComplaint", saveComplaint);
   intentMap.set("saveRecommendation", saveRecommendation);
-  // intentMap.set("rapidResponse", saveToDB);
   //   intentMap.set("coronavirusCountryNo - yes", coronavirusCountryNoGetPhone);
   //   intentMap.set("coronavirusCountryNo - no", coronavirusCountryNoGetPhone2);
   //   intentMap.set("coronavirusCountryNo - custom", coronavirusContactNotSure);
