@@ -90,11 +90,14 @@ app.post("/conversations", express.json(), (request, response) => {
     var complaint = agent.parameters.complaint;
     agent.add("Thank you for your invaluable input.");
 
+    var date = new Date();
+
     // save to db
     return db
       .collection("Complaints")
       .add({
         complaint: complaint,
+        date: date,
       })
       .then(
         (ref) =>
@@ -113,11 +116,14 @@ app.post("/conversations", express.json(), (request, response) => {
     var recommendation = agent.parameters.recommendation;
     agent.add("Thank you for your invaluable recommendation");
 
+    var date = new Date();
+
     // save to db
     return db
       .collection("Recommendation")
       .add({
         recommendation: recommendation,
+        date: date,
       })
       .then(
         (ref) =>
@@ -127,43 +133,10 @@ app.post("/conversations", express.json(), (request, response) => {
       );
   }
 
-  //   function coronavirusCountryYes(agent) {
-  //     agent.add("Which country did you visit?");
-  //   }
-
-  //   function coronavirusCountryNo(agent) {
-  //     agent.add(
-  //       "Have you come in contact with someone who later tested positive for COVID-19?"
-  //     );
-  //   }
-
-  //   function coronavirusCountryNoGetPhone(agent) {
-  //     agent.add(
-  //       "May we have your phone number so our Rapid Response Team can contact you immediately."
-  //     );
-  //   }
-
-  //   function coronavirusCountryNoGetPhone2(agent) {
-  //     agent.add(
-  //       "May we have your phone number so our Rapid Response Team can contact you immediately."
-  //     );
-  //   }
-
-  function rapidResponse(agent) {
-    agent.add(
-      "Thank you for your cooperation. \n\nIn the meantime we advise you to remain at home in self-isolation. Our Rapid Response Team will contact you shortly."
-    );
-  }
-
   function saveToDB(agent) {
     //we need to save some data here
     // data to be saved
     // age range, gender, symptoms, phone number, time
-
-    // var ageRange = agent.context.get("covidGender").parameters["ageGroups"];
-    // var gender = agent.context.get("covidSymptoms").parameters["gender"];
-    // var symptoms = agent.context.get("coronavirusPhone-followup").parameters["symptoms"];
-    // var phone = agent.context.get("capture-phone-number").parameters["phone"];
 
     // Simpler format
     var ageRange = agent.parameters.ageGroups;
@@ -171,8 +144,11 @@ app.post("/conversations", express.json(), (request, response) => {
     var symptoms = agent.parameters.symptoms;
     var phone = agent.parameters.phone;
 
+    //let's get the time
+    const time = new Date();
+
     // human readable date
-    // const dateObject = new Date();
+    const dateObject = new Date();
 
     agent.add(
       "Thank you for your cooperation. \n\nIn the meantime we advise you to remain at home in self-isolation. Our Rapid Response Team will contact you shortly."
@@ -180,18 +156,19 @@ app.post("/conversations", express.json(), (request, response) => {
 
     // save to db
     return db
-      .collection("Diagnosis")
+      .collection("userDiagnosis")
       .add({
         ageRange: ageRange,
         gender: gender,
         symptoms: symptoms,
         phone: phone,
+        time: time,
       })
       .then(
         (ref) =>
           // fetching free slots
-          console.log("Saved to DB"),
-        agent.add("Take care!.")
+          console.log("Saved to DB")
+        // agent.add("Take care!.")
       );
   }
 
