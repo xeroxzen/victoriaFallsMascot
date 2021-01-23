@@ -100,7 +100,7 @@ app.post("/conversations", express.json(), (request, response) => {
         (ref) =>
           // fetching free slots
           console.log("Saved to DB")
-        // agent("Take care!.")
+        // agent.add("Take care!.")
       );
   }
 
@@ -123,7 +123,7 @@ app.post("/conversations", express.json(), (request, response) => {
         (ref) =>
           // fetching free slots
           console.log("Saved to DB")
-        // agent("Take care!.")
+        // agent.add("Take care!.")
       );
   }
 
@@ -163,7 +163,6 @@ app.post("/conversations", express.json(), (request, response) => {
     // var ageRange = agent.context.get("covidGender").parameters["ageGroups"];
     // var gender = agent.context.get("covidSymptoms").parameters["gender"];
     // var symptoms = agent.context.get("coronavirusPhone-followup").parameters["symptoms"];
-
     // var phone = agent.context.get("capture-phone-number").parameters["phone"];
 
     // Simpler format
@@ -171,6 +170,7 @@ app.post("/conversations", express.json(), (request, response) => {
     var gender = agent.parameters.gender;
     var symptoms = agent.parameters.symptoms;
     var phone = agent.parameters.phone;
+
     // human readable date
     // const dateObject = new Date();
 
@@ -182,8 +182,8 @@ app.post("/conversations", express.json(), (request, response) => {
     return db
       .collection("Diagnosis")
       .add({
-        age: ageRange,
-        sex: gender,
+        ageRange: ageRange,
+        gender: gender,
         symptoms: symptoms,
         phone: phone,
       })
@@ -191,7 +191,7 @@ app.post("/conversations", express.json(), (request, response) => {
         (ref) =>
           // fetching free slots
           console.log("Saved to DB"),
-        agent("Take care!.")
+        agent.add("Take care!.")
       );
   }
 
