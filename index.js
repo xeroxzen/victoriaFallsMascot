@@ -43,6 +43,9 @@ app.post("/conversations", express.json(), (req, res) => {
     response: res,
   });
 
+  //parameters
+  let parameters = request.body;
+
   // function to test if it works
   function webhookDemo(agent) {
     // agent.add("Server is live. Congrats");
@@ -158,7 +161,6 @@ app.post("/conversations", express.json(), (req, res) => {
     //we need to save some data here
     // data to be saved
     // age range, gender, symptoms, phone number, time
-    let parameters = req.body;
 
     var ageRange = agent.context.get("covidGender").parameters["ageGroups"];
     var gender = agent.context.get("covidSymptoms").parameters["gender"];
