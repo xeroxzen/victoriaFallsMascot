@@ -73,12 +73,57 @@ app.post("/conversations", express.json(), (req, res) => {
 
   function coronavirusPhone(agent) {
     agent.add(
-      "May we have your phone number so our Rapid Response Team can contact you immediately."
+      "May we have your phone number so our Rapid Response Team can contact you immediately. \nExample: 0789488124"
     );
   }
 
   function confirmDetailsCancel(agent) {
     agent.add("Good bye! Have yourself a good day.");
+  }
+
+  function lodgeComplaint(agent) {
+    agent.add("What is your complaint?");
+  }
+
+  function saveComplaint(agent) {
+    var complaint = agent.context.get("complaint").parameters.complaint;
+    agent.add("Thank you for your invaluable input.");
+
+    // save to db
+    return db
+      .collection("Complaints")
+      .add({
+        complaint: complaint,
+      })
+      .then(
+        (ref) =>
+          // fetching free slots
+          console.log("Saved to DB")
+        // agent("Take care!.")
+      );
+  }
+
+  function recommendation(agent) {
+    agent.add("What is your recommendation?");
+  }
+
+  function saveRecommendation(agent) {
+    var recommendation = agent.context.get("recommendation").parameters
+      .recommendation;
+    agent.add("Thank you for your invaluable recommendation");
+
+    // save to db
+    return db
+      .collection("Recommendation")
+      .add({
+        recommendation: recommendation,
+      })
+      .then(
+        (ref) =>
+          // fetching free slots
+          console.log("Saved to DB")
+        // agent("Take care!.")
+      );
   }
 
   //   function coronavirusCountryYes(agent) {
@@ -157,6 +202,10 @@ app.post("/conversations", express.json(), (req, res) => {
   intentMap.set("coronavirusPhone", coronavirusPhone);
   intentMap.set("confirmDetailsCancel", confirmDetailsCancel);
   intentMap.set("rapidResponse", rapidResponse);
+  intentMap.set("improveServiceDelivery - Complaint", lodgeComplaint);
+  intentMap.set("improveServiceDelivery - Recommendation", recommendation);
+  intentMap.set("saveComplaint", saveComplaint);
+  intentMap.set("saveRecommendation", saveRecommendation);
   // intentMap.set("rapidResponse", saveToDB);
   //   intentMap.set("coronavirusCountryNo - yes", coronavirusCountryNoGetPhone);
   //   intentMap.set("coronavirusCountryNo - no", coronavirusCountryNoGetPhone2);
