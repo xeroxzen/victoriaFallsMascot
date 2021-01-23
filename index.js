@@ -91,7 +91,7 @@ app.post("/conversations", express.json(), (req, res) => {
 
     // save to db
     return db
-      .collection("Diagnosis")
+      .collection("Complaints")
       .add({
         complaint: complaint,
       })
@@ -114,7 +114,7 @@ app.post("/conversations", express.json(), (req, res) => {
 
     // save to db
     return db
-      .collection("Diagnosis")
+      .collection("Recommendation")
       .add({
         recommendation: recommendation,
       })
