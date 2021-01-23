@@ -37,11 +37,8 @@ app.get("/", (req, res) => {
   res.send("yup, the server is live.");
 });
 
-app.post("/conversations", express.json(), (req, res) => {
-  const agent = new WebhookClient({
-    request: req,
-    response: res,
-  });
+app.post("/conversations", express.json(), (request, response) => {
+  const agent = new WebhookClient({ request: request, response: response });
 
   //parameters
   // let parameters = agent.request.body;
@@ -89,7 +86,8 @@ app.post("/conversations", express.json(), (req, res) => {
   }
 
   function saveComplaint(agent) {
-    var complaint = agent.context.get("complaint").parameters.complaint;
+    // var complaint = agent.context.get("saveComplaint").parameters.complaint;
+    var complaint = agent.parameters.complaint;
     agent.add("Thank you for your invaluable input.");
 
     // save to db
@@ -111,8 +109,8 @@ app.post("/conversations", express.json(), (req, res) => {
   }
 
   function saveRecommendation(agent) {
-    var recommendation = agent.context.get("recommendation").parameters
-      .recommendation;
+    // var recommendation = agent.context.get("saveRecommendation").parameters.recommendation;
+    var recommendation = agent.parameters.recommendation;
     agent.add("Thank you for your invaluable recommendation");
 
     // save to db
@@ -162,13 +160,17 @@ app.post("/conversations", express.json(), (req, res) => {
     // data to be saved
     // age range, gender, symptoms, phone number, time
 
-    var ageRange = agent.context.get("covidGender").parameters["ageGroups"];
-    var gender = agent.context.get("covidSymptoms").parameters["gender"];
-    var symptoms = agent.context.get("coronavirusPhone-followup").parameters[
-      "symptoms"
-    ];
-    var phone = agent.context.get("capture-phone-number").parameters["phone"];
+    // var ageRange = agent.context.get("covidGender").parameters["ageGroups"];
+    // var gender = agent.context.get("covidSymptoms").parameters["gender"];
+    // var symptoms = agent.context.get("coronavirusPhone-followup").parameters["symptoms"];
 
+    // var phone = agent.context.get("capture-phone-number").parameters["phone"];
+
+    // Simpler format
+    var ageRange = agent.parameters.ageGroups;
+    var gender = agent.parameters.gender;
+    var symptoms = agent.parameters.symptoms;
+    var phone = agent.parameters.phone;
     // human readable date
     // const dateObject = new Date();
 
