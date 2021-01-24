@@ -114,9 +114,9 @@ app.post("/conversations", express.json(), (request, response) => {
   function saveRecommendation(agent) {
     // var recommendation = agent.context.get("saveRecommendation").parameters.recommendation;
     var recommendation = agent.parameters.recommendation;
-    agent.add("Thank you for your invaluable recommendation");
 
     var date = new Date();
+    agent.add("Thank you for your invaluable recommendation");
 
     // save to db
     return db
@@ -147,11 +147,8 @@ app.post("/conversations", express.json(), (request, response) => {
     //let's get the time
     const time = new Date();
 
-    // human readable date
-    const dateObject = new Date();
-
     agent.add(
-      "Thank you for your cooperation. \n\nIn the meantime we advise you to remain at home in self-isolation. Our Rapid Response Team will contact you shortly."
+      "Thank you for your cooperation. \n\nIn the meantime we advise you to remain at home in self-isolation."
     );
 
     // save to db
@@ -167,8 +164,8 @@ app.post("/conversations", express.json(), (request, response) => {
       .then(
         (ref) =>
           // fetching free slots
-          console.log("Saved to DB")
-        // agent.add("Take care!.")
+          console.log("Saved to DB"),
+        agent.add("Our Rapid Response Team will contact you shortly")
       );
   }
 
