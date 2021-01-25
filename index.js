@@ -6,7 +6,7 @@ const express = require("express");
 const app = express();
 // const dfff = require("dialogflow-fulfillment");
 const { WebhookClient } = require("dialogflow-fulfillment");
-const { Title, Card, Suggestion } = require("dialogflow-fulfillment");
+const { Card, Suggestion } = require("dialogflow-fulfillment");
 // const DialogflowApp = require("actions-on-google").DialogflowApp;
 
 //security credentials
@@ -166,7 +166,6 @@ app.post("/conversations", express.json(), (request, response) => {
           // fetching free slots
           console.log("Saved to DB"),
         // agent.add("Our Rapid Response Team will contact you shortly"),
-        agent.add(new title("Where to next?")),
         agent.add(new Suggestion(`More`)),
         agent.add(new Suggestion(`Bye for now`))
       );
