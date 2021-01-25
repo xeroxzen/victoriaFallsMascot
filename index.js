@@ -52,19 +52,27 @@ app.post("/conversations", express.json(), (request, response) => {
 
   // Many Cancel functions
   function coronavirusInfoCancel(agent) {
-    agent.add("Goodbye, see you next time.");
+    agent.add(
+      "Goodbye, see you next time. To start a new conversation, type 'Hi'"
+    );
   }
 
   function coronavirusProtectionCancel(agent) {
-    agent.add("Goodbye, see you next time.");
+    agent.add(
+      "Goodbye, see you next time. To start a new conversation, type 'Hi'"
+    );
   }
 
   function coronavirusUpdatesCancel(agent) {
-    agent.add("Goodbye, see you next time.");
+    agent.add(
+      "Goodbye, see you next time. To start a new conversation, type 'Hi'"
+    );
   }
 
   function coronavirusHelpCancel(agent) {
-    agent.add("Goodbye, see you next time.");
+    agent.add(
+      "Goodbye, see you next time. To start a new conversation, type 'Hi'"
+    );
   }
 
   function disclaimerNo(agent) {
@@ -78,7 +86,9 @@ app.post("/conversations", express.json(), (request, response) => {
   }
 
   function confirmDetailsCancel(agent) {
-    agent.add("Good bye! Have yourself a good day.");
+    agent.add(
+      "Good bye! Have yourself a good day. To start a new conversation, type 'Hi'"
+    );
   }
 
   function lodgeComplaint(agent) {
