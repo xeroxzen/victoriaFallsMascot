@@ -166,7 +166,7 @@ app.post("/conversations", express.json(), (request, response) => {
           // fetching free slots
           console.log("Saved to DB"),
         // agent.add("Our Rapid Response Team will contact you shortly"),
-        agent.add(new Title("Where to next?")),
+        agent.add(new title("Where to next?")),
         agent.add(new Suggestion(`More`)),
         agent.add(new Suggestion(`Bye for now`))
       );
