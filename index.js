@@ -6,7 +6,7 @@ const express = require("express");
 const app = express();
 // const dfff = require("dialogflow-fulfillment");
 const { WebhookClient } = require("dialogflow-fulfillment");
-const { Card, Suggestion } = require("dialogflow-fulfillment");
+const { Title, Card, Suggestion } = require("dialogflow-fulfillment");
 // const DialogflowApp = require("actions-on-google").DialogflowApp;
 
 //security credentials
