@@ -148,7 +148,7 @@ app.post("/conversations", express.json(), (request, response) => {
     const time = new Date();
 
     agent.add(
-      "Thank you for your cooperation. \n\nIn the meantime we advise you to remain at home in self-isolation."
+      "Thank you for your cooperation. \n\nIn the meantime we advise you to remain at home in self-isolation. Our Rapid Response Team will contact you shortly"
     );
 
     // save to db
@@ -165,8 +165,9 @@ app.post("/conversations", express.json(), (request, response) => {
         (ref) =>
           // fetching free slots
           console.log("Saved to DB"),
-        agent.add("Our Rapid Response Team will contact you shortly"),
-        agent.add(new Suggestion(`Start Over`)),
+        // agent.add("Our Rapid Response Team will contact you shortly"),
+        agent.add(new Title("Where to next?")),
+        agent.add(new Suggestion(`More`)),
         agent.add(new Suggestion(`Bye for now`))
       );
   }
