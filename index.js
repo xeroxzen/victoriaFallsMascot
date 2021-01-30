@@ -166,6 +166,11 @@ app.post("/conversations", express.json(), (request, response) => {
     //let's get the time
     const time = new Date();
 
+    //testing
+    console.log(
+      `Age: ${ageRange} \nSex: ${gender} \nSymptom: ${symptoms} \nTime: ${time}`
+    );
+
     // save to db
     return db
       .collection("interactions")
