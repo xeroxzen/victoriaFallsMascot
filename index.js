@@ -101,18 +101,18 @@ app.post("/conversations", express.json(), (request, response) => {
     agent.add("Thank you for your invaluable input.");
 
     var complaint = agent.parameters.complaint;
-    var date = new Date();
+    var complaintsDate = new Date();
 
     //save the id
     var id = uuid();
 
     // save to db
     return db
-      .collection("Complaints")
+      .collection("interactions")
       .add({
         id: id,
         complaint: complaint,
-        date: date,
+        complaintsDate: complaintsDate,
       })
       .then(
         (ref) =>
@@ -130,17 +130,17 @@ app.post("/conversations", express.json(), (request, response) => {
     // var recommendation = agent.context.get("saveRecommendation").parameters.recommendation;
     var id = uuid();
     var recommendation = agent.parameters.recommendation;
-    var date = new Date();
+    var recommendationDate = new Date();
 
     agent.add("Thank you for your invaluable recommendation");
 
     // save to db
     return db
-      .collection("Recommendation")
+      .collection("interactions")
       .add({
         id: id,
         recommendation: recommendation,
-        date: date,
+        recommendationDate: recommendationDate,
       })
       .then(
         (ref) =>
@@ -168,7 +168,7 @@ app.post("/conversations", express.json(), (request, response) => {
 
     // save to db
     return db
-      .collection("userDiagnosis")
+      .collection("interactions")
       .add({
         id: id,
         ageRange: ageRange,
