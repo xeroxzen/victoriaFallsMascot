@@ -7,6 +7,7 @@ const app = express();
 // const dfff = require("dialogflow-fulfillment");
 const { WebhookClient } = require("dialogflow-fulfillment");
 const { Card, Suggestion } = require("dialogflow-fulfillment");
+const { uuid } = require("uuidv4");
 // const DialogflowApp = require("actions-on-google").DialogflowApp;
 
 //security credentials
@@ -97,15 +98,19 @@ app.post("/conversations", express.json(), (request, response) => {
 
   function saveComplaint(agent) {
     // var complaint = agent.context.get("saveComplaint").parameters.complaint;
-    var complaint = agent.parameters.complaint;
     agent.add("Thank you for your invaluable input.");
 
+    var complaint = agent.parameters.complaint;
     var date = new Date();
+
+    //save the id
+    var id = uuid();
 
     // save to db
     return db
       .collection("Complaints")
       .add({
+        id: id,
         complaint: complaint,
         date: date,
       })
@@ -123,15 +128,17 @@ app.post("/conversations", express.json(), (request, response) => {
 
   function saveRecommendation(agent) {
     // var recommendation = agent.context.get("saveRecommendation").parameters.recommendation;
+    var id = uuid();
     var recommendation = agent.parameters.recommendation;
-
     var date = new Date();
+
     agent.add("Thank you for your invaluable recommendation");
 
     // save to db
     return db
       .collection("Recommendation")
       .add({
+        id: id,
         recommendation: recommendation,
         date: date,
       })
@@ -154,6 +161,8 @@ app.post("/conversations", express.json(), (request, response) => {
     var symptoms = agent.parameters.symptoms;
     var phone = agent.parameters.phone;
 
+    //get the id
+    var id = uuid();
     //let's get the time
     const time = new Date();
 
@@ -161,6 +170,7 @@ app.post("/conversations", express.json(), (request, response) => {
     return db
       .collection("userDiagnosis")
       .add({
+        id: id,
         ageRange: ageRange,
         gender: gender,
         symptoms: symptoms,
