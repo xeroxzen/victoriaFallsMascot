@@ -108,7 +108,7 @@ app.post("/conversations", express.json(), (request, response) => {
 
     // save to db
     return db
-      .collection("interactions")
+      .collection("Complaints")
       .add({
         id: id,
         complaint: complaint,
@@ -136,7 +136,7 @@ app.post("/conversations", express.json(), (request, response) => {
 
     // save to db
     return db
-      .collection("interactions")
+      .collection("Recommendation")
       .add({
         id: id,
         recommendation: recommendation,
@@ -173,7 +173,7 @@ app.post("/conversations", express.json(), (request, response) => {
 
     // save to db
     return db
-      .collection("interactions")
+      .collection("userDiagnosis")
       .add({
         id: id,
         ageRange: ageRange,
