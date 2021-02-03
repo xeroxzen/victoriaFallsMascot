@@ -156,13 +156,13 @@ app.post("/conversations", express.json(), (request, response) => {
     // age range, gender, symptoms, phone number, time
 
     // Simpler format
-    let ageRange = agent.parameters.ageGroups;
-    let gender = agent.parameters.gender;
-    let symptoms = agent.parameters.symptoms;
-    let phone = agent.parameters.phone;
+    const ageRange = agent.parameters.ageGroups;
+    const gender = agent.parameters.gender;
+    const symptoms = agent.parameters.symptoms;
+    const phone = agent.parameters.phone;
 
     //get the id
-    let id = uuid();
+    const id = uuid();
     //let's get the time
     const time = new Date();
 
