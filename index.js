@@ -86,11 +86,11 @@ app.post("/conversations", express.json(), (request, response) => {
     );
   }
 
-  function confirmDetailsCancel(agent) {
-    agent.add(
-      "Good bye! Have yourself a good day. To start a new conversation, type 'Hi'"
-    );
-  }
+  // function confirmDetailsCancel(agent) {
+  //   agent.add(
+  //     "Good bye! Have yourself a good day. To start a new conversation, type 'Hi'"
+  //   );
+  // }
 
   function lodgeComplaint(agent) {
     agent.add("What is your complaint?");
@@ -204,7 +204,7 @@ app.post("/conversations", express.json(), (request, response) => {
   intentMap.set("coronavirusHelpCancel", coronavirusHelpCancel);
   intentMap.set("disclaimerNo", disclaimerNo);
   intentMap.set("coronavirusPhone", coronavirusPhone);
-  intentMap.set("confirmDetailsCancel", confirmDetailsCancel);
+  // intentMap.set("confirmDetailsCancel", confirmDetailsCancel);
   // intentMap.set("rapidResponse", rapidResponse);
   intentMap.set("saveToDB", saveToDB);
   intentMap.set("improveServiceDelivery - Complaint", lodgeComplaint);
