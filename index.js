@@ -156,7 +156,7 @@ app.post("/conversations", express.json(), (request, response) => {
     // age range, gender, symptoms, phone number, time
 
     // Simpler format
-    const ageRange = agent.parameters["ageGroups"];
+    const age = agent.parameters["ageGroups"];
     const gender = agent.parameters["gender"];
     const symptoms = agent.parameters["symptoms"];
     const phone = agent.parameters["phone"];
@@ -168,7 +168,7 @@ app.post("/conversations", express.json(), (request, response) => {
 
     //testing
     console.log(
-      `Age: ${ageRange} \nSex: ${gender} \nSymptom: ${symptoms} \nTime: ${time}`
+      `Age: ${age} \nSex: ${gender} \nSymptom: ${symptoms} \nTime: ${time}`
     );
 
     // save to db
@@ -176,7 +176,7 @@ app.post("/conversations", express.json(), (request, response) => {
       .collection("userDiagnosis")
       .add({
         id: id,
-        ageRange: ageRange,
+        age: age,
         gender: gender,
         symptoms: symptoms,
         phone: phone,
