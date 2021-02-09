@@ -76,6 +76,12 @@ app.post("/conversations", express.json(), (request, response) => {
     );
   }
 
+  function askQuestion(agent) {
+    agent.add(
+      "Hello there. Sorry this function is not available yet.We'll let you know as soon as it is available."
+    );
+  }
+
   function disclaimerNo(agent) {
     agent.add("Good bye");
   }
@@ -202,6 +208,7 @@ app.post("/conversations", express.json(), (request, response) => {
   intentMap.set("coronavirusProtectionCancel", coronavirusProtectionCancel);
   intentMap.set("coronavirusUpdatesCancel", coronavirusUpdatesCancel);
   intentMap.set("coronavirusHelpCancel", coronavirusHelpCancel);
+  intentMap.set("askQuestion", askQuestion);
   intentMap.set("disclaimerNo", disclaimerNo);
   intentMap.set("coronavirusPhone", coronavirusPhone);
   // intentMap.set("confirmDetailsCancel", confirmDetailsCancel);
