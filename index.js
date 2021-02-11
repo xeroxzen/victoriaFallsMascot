@@ -92,12 +92,6 @@ app.post("/conversations", express.json(), (request, response) => {
     );
   }
 
-  // function confirmDetailsCancel(agent) {
-  //   agent.add(
-  //     "Good bye! Have yourself a good day. To start a new conversation, type 'Hi'"
-  //   );
-  // }
-
   function lodgeComplaint(agent) {
     agent.add("What is your complaint?");
   }
