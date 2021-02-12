@@ -145,8 +145,8 @@ app.post("/conversations", express.json(), (request, response) => {
       .then(
         (ref) =>
           // fetching free slots
-          console.log("Saved to DB")
-        // agent.add("Take care!.")
+          console.log("Saved to DB"),
+        agent.add("Take care!.")
       );
   }
 
