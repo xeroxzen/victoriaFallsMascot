@@ -130,7 +130,9 @@ app.post("/conversations", express.json(), (request, response) => {
     // var recommendation = agent.context.get("saveRecommendation").parameters.recommendation;
     var id = uuid();
     var recommendation = agent.parameters.recommendation;
-    var recommendationDate = new Date();
+    var recommendationDate = admin.firestore.Timestamp.fromDate(
+      new Date()
+    ).toDate(); //new Date();
 
     agent.add("Thank you for your invaluable recommendation");
 
