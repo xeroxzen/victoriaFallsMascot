@@ -112,7 +112,7 @@ app.post("/conversations", express.json(), (request, response) => {
       .add({
         id: id,
         complaint: complaint,
-        complaintsDate: complaintsDate,
+        date: complaintsDate,
       })
       .then(
         (ref) =>
@@ -140,7 +140,7 @@ app.post("/conversations", express.json(), (request, response) => {
       .add({
         id: id,
         recommendation: recommendation,
-        recommendationDate: recommendationDate,
+        date: recommendationDate,
       })
       .then(
         (ref) =>
