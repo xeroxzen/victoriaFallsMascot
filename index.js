@@ -205,6 +205,10 @@ app.post("/conversations", express.json(), (request, response) => {
     agent.add("May we have your phone number? \n\nFormat +263779545334");
   }
 
+  function getPaymentsAmount(agent) {
+    agent.add("Amount to be paid: $");
+  }
+
   // let's setup intentMaps
   var intentMap = new Map();
   intentMap.set("webhookDemo", webhookDemo);
@@ -219,6 +223,7 @@ app.post("/conversations", express.json(), (request, response) => {
   // intentMap.set("rapidResponse", rapidResponse);
   intentMap.set("payment", payment);
   intentMap.set("getPaymentsPhone", getPaymentsPhone);
+  intentMap.set("getPaymentsAmount", getPaymentsAmount);
   intentMap.set("saveToDB", saveToDB);
   intentMap.set("improveServiceDelivery - Complaint", lodgeComplaint);
   intentMap.set("improveServiceDelivery - Recommendation", recommendation);
