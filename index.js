@@ -209,6 +209,12 @@ app.post("/conversations", express.json(), (request, response) => {
     agent.add("Amount to be paid: $");
   }
 
+  function getPaymentsConfirmation(agent) {
+    agent.add(
+      `Account Number: ${accountNumber} \nPhone Number: ${phoneNumber} \nAmount: $(amount)`
+    );
+  }
+
   // let's setup intentMaps
   var intentMap = new Map();
   intentMap.set("webhookDemo", webhookDemo);
@@ -224,6 +230,7 @@ app.post("/conversations", express.json(), (request, response) => {
   intentMap.set("payment", payment);
   intentMap.set("getPaymentsPhone", getPaymentsPhone);
   intentMap.set("getPaymentsAmount", getPaymentsAmount);
+  intentMap.set("getPaymentsConfirmation", getPaymentsConfirmation);
   intentMap.set("saveToDB", saveToDB);
   intentMap.set("improveServiceDelivery - Complaint", lodgeComplaint);
   intentMap.set("improveServiceDelivery - Recommendation", recommendation);
