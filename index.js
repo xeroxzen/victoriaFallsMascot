@@ -195,6 +195,12 @@ app.post("/conversations", express.json(), (request, response) => {
       );
   }
 
+  function payment(agent) {
+    agent.add(
+      "Welcome to the payments portal. \n\nTo proceed with your rates payment, may we have your House Account Number"
+    );
+  }
+
   // let's setup intentMaps
   var intentMap = new Map();
   intentMap.set("webhookDemo", webhookDemo);
@@ -207,6 +213,7 @@ app.post("/conversations", express.json(), (request, response) => {
   intentMap.set("coronavirusPhone", coronavirusPhone);
   // intentMap.set("confirmDetailsCancel", confirmDetailsCancel);
   // intentMap.set("rapidResponse", rapidResponse);
+  intentMap.set("Payment", payment);
   intentMap.set("saveToDB", saveToDB);
   intentMap.set("improveServiceDelivery - Complaint", lodgeComplaint);
   intentMap.set("improveServiceDelivery - Recommendation", recommendation);
