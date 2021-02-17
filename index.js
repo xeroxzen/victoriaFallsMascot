@@ -210,9 +210,9 @@ app.post("/conversations", express.json(), (request, response) => {
   }
 
   function getPaymentsConfirmation(agent) {
-    const account = agent.parameters.accountNumber.original;
-    const phoneNumber = agent.parameters["phone-number"].original;
-    const amount = agent.parameters.amount.original;
+    const account = agent.parameters.accountNumber;
+    const phoneNumber = agent.parameters["phone-number"];
+    const amount = agent.parameters.amount;
 
     agent.add(
       `Account Number: ${account} \nPhone Number: ${phoneNumber} \nAmount: ${amount}`
