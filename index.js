@@ -195,7 +195,7 @@ app.post("/conversations", express.json(), (request, response) => {
       );
   }
 
-  function payment(agent) {
+  function paynowPayment(agent) {
     agent.add(
       "Welcome to the payments portal. \n\nTo proceed with your rates payment, may we have your House Account Number"
     );
@@ -227,7 +227,7 @@ app.post("/conversations", express.json(), (request, response) => {
   intentMap.set("coronavirusPhone", coronavirusPhone);
   // intentMap.set("confirmDetailsCancel", confirmDetailsCancel);
   // intentMap.set("rapidResponse", rapidResponse);
-  intentMap.set("payment", payment);
+  intentMap.set("paynowPayment", paynowPayment);
   intentMap.set("getPaymentsPhone", getPaymentsPhone);
   intentMap.set("getPaymentsAmount", getPaymentsAmount);
   intentMap.set("getPaymentsConfirmation", getPaymentsConfirmation);
