@@ -201,7 +201,7 @@ app.post("/conversations", express.json(), (request, response) => {
     );
   }
 
-  function paymentsPhone(agent) {
+  function getPaymentsPhone(agent) {
     agent.add("May we have your phone number? \n\nFormat +263779545334");
   }
 
@@ -218,7 +218,7 @@ app.post("/conversations", express.json(), (request, response) => {
   // intentMap.set("confirmDetailsCancel", confirmDetailsCancel);
   // intentMap.set("rapidResponse", rapidResponse);
   intentMap.set("payment", payment);
-  intentMap.set("paymentsPhone", paymentsPhone);
+  intentMap.set("getPaymentsPhone", getPaymentsPhone);
   intentMap.set("saveToDB", saveToDB);
   intentMap.set("improveServiceDelivery - Complaint", lodgeComplaint);
   intentMap.set("improveServiceDelivery - Recommendation", recommendation);
