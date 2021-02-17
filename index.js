@@ -217,6 +217,11 @@ app.post("/conversations", express.json(), (request, response) => {
     agent.add(
       `Account Number: ${account} \nPhone Number: ${phoneNumber} \nAmount: ${amount}`
     );
+
+    //For testing
+    console.log(
+      `Account Number: ${account} \nPhone Number: ${phoneNumber} \nAmount: ${amount}`
+    );
   }
 
   // let's setup intentMaps
