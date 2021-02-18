@@ -223,7 +223,7 @@ app.post("/conversations", express.json(), (request, response) => {
 
     //For testing
     console.log(
-      `Account Number: ${account} \nPhone Number: ${phoneNumber} \nAmount: ${amount.amount} \nDate: ${date}`
+      `Account Number: ${account} \nPhone Number: ${phoneNumber} \nAmount: $ ${amount.amount} \nDate: ${date}`
     );
 
     return db
