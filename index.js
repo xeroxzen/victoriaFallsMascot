@@ -214,6 +214,9 @@ app.post("/conversations", express.json(), (request, response) => {
     const phoneNumber = agent.parameters["phone-number"];
     const amount = agent.parameters.amount;
 
+    //date
+    const date = new Date();
+
     agent.add(
       `Account Number: ${account} \nPhone Number: ${phoneNumber} \nAmount: ${amount}`
     );
@@ -222,6 +225,21 @@ app.post("/conversations", express.json(), (request, response) => {
     console.log(
       `Account Number: ${account} \nPhone Number: ${phoneNumber} \nAmount: ${amount}`
     );
+
+    return db
+      .collection("payments")
+      .add({
+        accoutNumber: account,
+        phoneNum: phoneNumber,
+        amount: amount,
+        paymentDate: date,
+      })
+      .then(
+        (ref) =>
+          // fetching free slots
+          console.log("Payment confirmed")
+        // agent.add("Take care!.")
+      );
   }
 
   // let's setup intentMaps
