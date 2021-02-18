@@ -230,7 +230,7 @@ app.post("/conversations", express.json(), (request, response) => {
       .collection("payments")
       .add({
         accoutNumber: account,
-        phoneNum: phoneNumber,
+        paymentPhone: paymentPhone,
         amount: amount,
         paymentDate: date,
       })
