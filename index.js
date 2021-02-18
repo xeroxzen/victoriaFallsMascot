@@ -9,6 +9,7 @@ const { WebhookClient } = require("dialogflow-fulfillment");
 const { Card, Suggestion } = require("dialogflow-fulfillment");
 const { uuid } = require("uuidv4");
 // const DialogflowApp = require("actions-on-google").DialogflowApp;
+const functions = require("firebase-functions");
 
 //security credentials
 var admin = require("firebase-admin");
