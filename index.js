@@ -9,10 +9,10 @@ const { WebhookClient } = require("dialogflow-fulfillment");
 const { Card, Suggestion } = require("dialogflow-fulfillment");
 const { uuid } = require("uuidv4");
 // const DialogflowApp = require("actions-on-google").DialogflowApp;
-const functions = require("firebase-functions");
 
 //security credentials
 var admin = require("firebase-admin");
+const functions = require("firebase-functions");
 
 var serviceAccount = require("./config/victoriafallsmascot-imwo-firebase-adminsdk-2hs88-562506bac3.json");
 
@@ -215,6 +215,9 @@ app.post("/conversations", express.json(), (request, response) => {
     const paymentPhone = agent.parameters.paymentPhone;
     const amount = agent.parameters.amount;
 
+    //unique id
+    const id = uuid();
+
     //date
     const date = new Date();
 
@@ -230,6 +233,7 @@ app.post("/conversations", express.json(), (request, response) => {
     return db
       .collection("payments")
       .add({
+        id: id,
         accoutNumber: account,
         paymentPhone: paymentPhone,
         amount: amount,
