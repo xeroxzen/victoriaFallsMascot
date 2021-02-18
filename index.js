@@ -211,19 +211,19 @@ app.post("/conversations", express.json(), (request, response) => {
 
   function getPaymentsConfirmation(agent) {
     const account = agent.parameters.accountNumber;
-    const phoneNumber = agent.parameters["phone-number"];
+    const paymentPhone = agent.parameters.paymentPhone;
     const amount = agent.parameters.amount;
 
     //date
     const date = new Date();
 
     agent.add(
-      `Account Number: ${account} \nPhone Number: ${phoneNumber} \nAmount: $ ${amount.amount} \nDate: ${date}`
+      `Account Number: ${account} \nPhone Number: ${paymentPhone} \nAmount: $ ${amount.amount} \nDate: ${date}`
     );
 
     //For testing
     console.log(
-      `Account Number: ${account} \nPhone Number: ${phoneNumber} \nAmount: $ ${amount.amount} \nDate: ${date}`
+      `Account Number: ${account} \nPhone Number: ${paymentPhone} \nAmount: $ ${amount.amount} \nDate: ${date}`
     );
 
     return db
