@@ -218,12 +218,12 @@ app.post("/conversations", express.json(), (request, response) => {
     const date = new Date();
 
     agent.add(
-      `Account Number: ${account} \nPhone Number: ${phoneNumber} \nAmount: ${amount}`
+      `Account Number: ${account} \nPhone Number: ${phoneNumber} \nAmount: ${amount.amount} \nDate: ${date}`
     );
 
     //For testing
     console.log(
-      `Account Number: ${account} \nPhone Number: ${phoneNumber} \nAmount: ${amount}`
+      `Account Number: ${account} \nPhone Number: ${phoneNumber} \nAmount: ${amount.amount} \nDate: ${date}`
     );
 
     return db
