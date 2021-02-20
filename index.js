@@ -1,19 +1,16 @@
-//Author: Andile Jade Mbele
+//Author: Andile Jaden Mbele
 //Purpose: nodejs webhook for victoria falls mascot
 "use strict";
 
 const express = require("express");
 const app = express();
 const { Paynow } = require("paynow");
-// const dfff = require("dialogflow-fulfillment");
 const { WebhookClient } = require("dialogflow-fulfillment");
 const { Card, Suggestion } = require("dialogflow-fulfillment");
 const { uuid } = require("uuidv4");
-// const DialogflowApp = require("actions-on-google").DialogflowApp;
 
 //security credentials
 var admin = require("firebase-admin");
-const functions = require("firebase-functions");
 
 var serviceAccount = require("./config/victoriafallsmascot-imwo-firebase-adminsdk-2hs88-562506bac3.json");
 
@@ -42,9 +39,6 @@ app.get("/", (req, res) => {
 
 app.post("/conversations", express.json(), (request, response) => {
   const agent = new WebhookClient({ request: request, response: response });
-
-  //parameters
-  // let parameters = agent.request.body;
 
   // function to test if it works
   function webhookDemo(agent) {
@@ -129,7 +123,6 @@ app.post("/conversations", express.json(), (request, response) => {
   }
 
   function saveRecommendation(agent) {
-    // var recommendation = agent.context.get("saveRecommendation").parameters.recommendation;
     var id = uuid();
     var recommendation = agent.parameters.recommendation;
     var recommendationDate = new Date();
@@ -153,10 +146,6 @@ app.post("/conversations", express.json(), (request, response) => {
   }
 
   function saveToDB(agent) {
-    //we need to save some data here
-    // data to be saved
-    // age range, gender, symptoms, phone number, time
-
     // Simpler format
     const age = agent.parameters["ageGroups"];
     const gender = agent.parameters["gender"];
@@ -212,7 +201,9 @@ app.post("/conversations", express.json(), (request, response) => {
   }
 
   function getPaymentsOption(agent) {
-    agent.add("Which payment option would you like to use, EcoCash or OneMoney");
+    agent.add(
+      "Which payment option would you like to use, EcoCash or OneMoney"
+    );
   }
 
   function getPaymentsAccount(agent) {
@@ -229,16 +220,16 @@ app.post("/conversations", express.json(), (request, response) => {
     const amount = agent.parameters.amount;
 
     agent.add(
-      "Account Number: ${account} \nPhone Number: ${phoneNumber} \nAmount: ${amount}"
+      `Account Number: ${account} \nPhone Number: ${phoneNumber} \nAmount: ${amount}`
     );
 
     //For testing
     console.log(
-      "Account Number: ${account} \nPhone Number: ${phoneNumber} \nAmount: ${amount}"
+      `Account Number: ${account} \nPhone Number: ${phoneNumber} \nAmount: ${amount}`
     );
   }
 
-  function generateInvoiceNumber(){
+  function generateInvoiceNumber() {
     //invoice number format INV-yymmdd-count INV-20210218-009
     //get date
     const date = new Date();
@@ -264,27 +255,27 @@ app.post("/conversations", express.json(), (request, response) => {
 
     //var newNumber = (lastNumber + 1).toString();
     var newNumber = (Math.floor(Math.random() * 1000) + 1).toString();
-    (newNumber.length == 1) && (newNumber = '0' + newNumber);
-    (newNumber.length == 2) && (newNumber = '0' + newNumber);
+    newNumber.length == 1 && (newNumber = "0" + newNumber);
+    newNumber.length == 2 && (newNumber = "0" + newNumber);
 
-    return 'INV-' + dateString + '-' + newNumber;
+    return "INV-" + dateString + "-" + newNumber;
   }
 
-  function formatDate(date){
+  function formatDate(date) {
     let str = "";
     var y = date.getFullYear().toString();
     var m = (date.getMonth() + 1).toString();
     var d = date.getDate().toString();
 
-    (d.length == 1) && (d = '0' + d);
-    (m.length == 1) && (m = '0' + m);
+    d.length == 1 && (d = "0" + d);
+    m.length == 1 && (m = "0" + m);
 
     str = y + m + d;
     return str;
   }
 
-  function processPayment(agent){
-    //generate a new invoice nummber
+  function processPayment(agent) {
+    //generate a new invoice number
     const invoiceNumber = generateInvoiceNumber();
     const accountNumber = agent.parameters.accountNumber;
     const houseNumber = agent.parameters.houseNumber;
@@ -297,10 +288,16 @@ app.post("/conversations", express.json(), (request, response) => {
     let paynow = new Paynow("INTEGRATION_ID", "INTEGRATION_KEY");
     let payment = paynow.createPayment(invoiceNumber, email);
     payment.add("Rates", amount);
-    paynow.sendMobile(payment, accountNumber, paymentOption)
-      .then(function(response) {
-        if(response.success) {
-          agent.add("You have successfully paid $" + agent.parameters.amount + ". Your invoice number is " +invoiceNumber);
+    paynow
+      .sendMobile(payment, accountNumber, paymentOption)
+      .then(function (response) {
+        if (response.success) {
+          agent.add(
+            "You have successfully paid $" +
+              amount.amount +
+              ". Your invoice number is " +
+              invoiceNumber
+          );
           var paynowReference = response.pollUrl;
           //save the id
           var id = uuid();
@@ -320,19 +317,16 @@ app.post("/conversations", express.json(), (request, response) => {
               email: email,
               date: date,
             })
-            .then(
-              ref =>
-                console.log("Success")
-            );
+            .then((ref) => console.log("Success"));
         } else {
-          addgent.add("Whoops something went wrong!");
+          agent.add("Whoops something went wrong!");
           console.log(response.error);
         }
-    }).catch(ex => {
-      agent.add("Whoops something went wrong!");
-      console.log("Something is really wrong", ex)
-    });  
-
+      })
+      .catch((error) => {
+        agent.add("Whoops something went wrong!");
+        console.log("Something is really wrong", error);
+      });
   }
 
   // let's setup intentMaps
@@ -345,8 +339,7 @@ app.post("/conversations", express.json(), (request, response) => {
   intentMap.set("askQuestion", askQuestion);
   intentMap.set("disclaimerNo", disclaimerNo);
   intentMap.set("coronavirusPhone", coronavirusPhone);
-  // intentMap.set("confirmDetailsCancel", confirmDetailsCancel);
-  // intentMap.set("rapidResponse", rapidResponse);
+
   intentMap.set("paynowPayment", paynowPayment);
   intentMap.set("getPaymentsPhone", getPaymentsPhone);
   intentMap.set("getPaymentsAmount", getPaymentsAmount);
@@ -356,11 +349,7 @@ app.post("/conversations", express.json(), (request, response) => {
   intentMap.set("improveServiceDelivery - Recommendation", recommendation);
   intentMap.set("saveComplaint", saveComplaint);
   intentMap.set("saveRecommendation", saveRecommendation);
-  //   intentMap.set("coronavirusCountryNo - yes", coronavirusCountryNoGetPhone);
-  //   intentMap.set("coronavirusCountryNo - no", coronavirusCountryNoGetPhone2);
-  //   intentMap.set("coronavirusCountryNo - custom", coronavirusContactNotSure);
-  //   intentMap.set("coronavirusCountryYes - next", coronavirusCountryYesNext);
-  //payments
+
   intentMap.set("getPaymentsHouseNumber", getPaymentsHouseNumber);
   intentMap.set("getPaymentsPhone", getPaymentsPhone);
   intentMap.set("getPaymentsConfirmation", getPaymentsConfirmation);
