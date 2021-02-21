@@ -186,7 +186,9 @@ app.post("/conversations", express.json(), (request, response) => {
       );
   }
 
-  function getPaymentsHouseNumber(agent) {
+  //Payments
+
+  function getPaymentsAccountNumber(agent) {
     agent.add(
       "Welcome to the payments portal. \n\nTo proceed with your rates payment, may we have your House number"
     );
@@ -200,11 +202,11 @@ app.post("/conversations", express.json(), (request, response) => {
     agent.add("May we have your email address?");
   }
 
-  function getPaymentsOption(agent) {
-    agent.add(
-      "Which payment option would you like to use, EcoCash or OneMoney"
-    );
-  }
+  // function getPaymentsOption(agent) {
+  //   agent.add(
+  //     "Which payment option would you like to use, EcoCash or OneMoney"
+  //   );
+  // }
 
   function getPaymentsAccount(agent) {
     agent.add("May we have your mobile money number eg 07XXXXXXXX");
@@ -340,19 +342,14 @@ app.post("/conversations", express.json(), (request, response) => {
   intentMap.set("disclaimerNo", disclaimerNo);
   intentMap.set("coronavirusPhone", coronavirusPhone);
 
-  intentMap.set("paynowPayment", paynowPayment);
-  intentMap.set("getPaymentsPhone", getPaymentsPhone);
-  intentMap.set("getPaymentsAmount", getPaymentsAmount);
-  intentMap.set("getPaymentsConfirmation", getPaymentsConfirmation);
   intentMap.set("saveToDB", saveToDB);
   intentMap.set("improveServiceDelivery - Complaint", lodgeComplaint);
   intentMap.set("improveServiceDelivery - Recommendation", recommendation);
   intentMap.set("saveComplaint", saveComplaint);
   intentMap.set("saveRecommendation", saveRecommendation);
 
-  intentMap.set("getPaymentsHouseNumber", getPaymentsHouseNumber);
+  intentMap.set("getPaymentsAccountNumber", payments);
   intentMap.set("getPaymentsPhone", getPaymentsPhone);
-  intentMap.set("getPaymentsConfirmation", getPaymentsConfirmation);
   intentMap.set("getPaymentsAmount", getPaymentsAmount);
   intentMap.set("getPaymentsAccount", getPaymentsAccount);
   intentMap.set("getPaymentsOption", getPaymentsOption);
