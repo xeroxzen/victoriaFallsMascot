@@ -286,8 +286,8 @@ app.post("/conversations", express.json(), (request, response) => {
     //generate a new invoice number
     const invoiceNumber = generateInvoiceNumber();
     const accountNumber = agent.parameters.accountNumber;
-    const houseNumber = agent.parameters.houseNumber;
-    const phone = agent.parameters.phone;
+    const phone = agent.parameters["phone-number"];
+    const phoneAccount = agent.parameters.phoneAccount;
     const paymentOption = agent.parameters.paymentOption;
     const amount = parseFloat(agent.parameters.amount);
     const email = agent.parameters.email;
@@ -319,6 +319,7 @@ app.post("/conversations", express.json(), (request, response) => {
               accountNumber: accountNumber,
               houseNumber: houseNumber,
               phone: phone,
+              phoneAccount: phoneAccount,
               paymentOption: paymentOption,
               amount: amount,
               paynowReference: paynowReference,
@@ -358,8 +359,8 @@ app.post("/conversations", express.json(), (request, response) => {
   intentMap.set("getPaymentsPhone", getPaymentsPhone);
   intentMap.set("getPaymentsAmount", getPaymentsAmount);
   intentMap.set("getPaymentsAccount", getPaymentsAccount);
-  // intentMap.set("getPaymentsOption", getPaymentsOption);
   intentMap.set("getPaymentsEmail", getPaymentsEmail);
+  intentMap.set("getPaymentsConfirmation", getPaymentsConfirmation);
   intentMap.set("processPayment", processPayment);
 
   // intentmap request handling
