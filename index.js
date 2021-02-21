@@ -216,20 +216,20 @@ app.post("/conversations", express.json(), (request, response) => {
     agent.add("Amount to be paid in ZWL e.g 500.90");
   }
 
-  function getPaymentsConfirmation(agent) {
-    const account = agent.parameters.accountNumber;
-    const phoneNumber = agent.parameters["phone-number"];
-    const amount = agent.parameters.amount;
+  // function getPaymentsConfirmation(agent) {
+  //   const account = agent.parameters.accountNumber;
+  //   const phoneNumber = agent.parameters["phone-number"];
+  //   const amount = agent.parameters.amount;
 
-    agent.add(
-      `Account Number: ${account} \nPhone Number: ${phoneNumber} \nAmount: ${amount}`
-    );
+  //   agent.add(
+  //     `Account Number: ${account} \nPhone Number: ${phoneNumber} \nAmount: ${amount}`
+  //   );
 
-    //For testing
-    console.log(
-      `Account Number: ${account} \nPhone Number: ${phoneNumber} \nAmount: ${amount}`
-    );
-  }
+  //   //For testing
+  //   console.log(
+  //     `Account Number: ${account} \nPhone Number: ${phoneNumber} \nAmount: ${amount}`
+  //   );
+  // }
 
   function generateInvoiceNumber() {
     //invoice number format INV-yymmdd-count INV-20210218-009
@@ -352,7 +352,7 @@ app.post("/conversations", express.json(), (request, response) => {
   intentMap.set("getPaymentsPhone", getPaymentsPhone);
   intentMap.set("getPaymentsAmount", getPaymentsAmount);
   intentMap.set("getPaymentsAccount", getPaymentsAccount);
-  intentMap.set("getPaymentsOption", getPaymentsOption);
+  // intentMap.set("getPaymentsOption", getPaymentsOption);
   intentMap.set("getPaymentsEmail", getPaymentsEmail);
   intentMap.set("processPayment", processPayment);
 
