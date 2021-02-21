@@ -317,7 +317,6 @@ app.post("/conversations", express.json(), (request, response) => {
               id: id,
               invoiceNumber: invoiceNumber,
               accountNumber: accountNumber,
-              houseNumber: houseNumber,
               phone: phone,
               phoneAccount: phoneAccount,
               paymentOption: paymentOption,
