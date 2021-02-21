@@ -355,7 +355,7 @@ app.post("/conversations", express.json(), (request, response) => {
   intentMap.set("saveComplaint", saveComplaint);
   intentMap.set("saveRecommendation", saveRecommendation);
 
-  intentMap.set("getPaymentsAccountNumber", payments);
+  intentMap.set("payments", getPaymentsAccountNumber);
   intentMap.set("getPaymentsPhone", getPaymentsPhone);
   intentMap.set("getPaymentsAmount", getPaymentsAmount);
   intentMap.set("getPaymentsAccount", getPaymentsAccount);
