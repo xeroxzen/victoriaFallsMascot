@@ -216,21 +216,6 @@ app.post("/conversations", express.json(), (request, response) => {
     agent.add("Amount to be paid in ZWL e.g 500.90");
   }
 
-  // function getPaymentsConfirmation(agent) {
-  //   const account = agent.parameters.accountNumber;
-  //   const phoneNumber = agent.parameters["phone-number"];
-  //   const amount = agent.parameters.amount;
-
-  //   agent.add(
-  //     `Account Number: ${account} \nPhone Number: ${phoneNumber} \nAmount: ${amount}`
-  //   );
-
-  //   //For testing
-  //   console.log(
-  //     `Account Number: ${account} \nPhone Number: ${phoneNumber} \nAmount: ${amount}`
-  //   );
-  // }
-
   function generateInvoiceNumber() {
     //invoice number format INV-yymmdd-count INV-20210218-009
     //get date
@@ -274,6 +259,27 @@ app.post("/conversations", express.json(), (request, response) => {
 
     str = y + m + d;
     return str;
+  }
+
+  function getPaymentsConfirmation(agent) {
+    const invoiceNumber = generateInvoiceNumber();
+    const accountNumber = agent.parameters.accountNumber;
+    const phone = agent.parameters["phone-number"];
+    const phoneAccount = agent.parameters.phoneAccount;
+    const paymentOption = agent.parameters.paymentOption;
+    const amount = parseFloat(agent.parameters.amount);
+    const email = agent.parameters.email;
+    const date = new Date();
+
+    agent.add(
+      `Account Number: ${accountNumber} \nPhone Number: ${phone} \nAmount: ${amount} \nPayment Option: ${paymentOption} \nPhone Account: ${phoneAccount} \nEmail: ${email} \nInvoice Number: ${invoiceNumber} \nDate: ${date}`
+    );
+    agent.add(new Suggestion(`Confirm`)), agent.add(new Suggestion(`Cancel`));
+
+    //For testing
+    console.log(
+      `Account Number: ${account} \nPhone Number: ${phoneNumber} \nAmount: ${amount}`
+    );
   }
 
   function processPayment(agent) {
