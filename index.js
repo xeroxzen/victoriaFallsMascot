@@ -278,7 +278,7 @@ app.post("/conversations", express.json(), (request, response) => {
 
     //For testing
     console.log(
-      `Account Number: ${account} \nPhone Number: ${phoneNumber} \nAmount: ${amount}`
+      `Account Number: ${accountNumber} \nPhone Number: ${phone} \nAmount: ${amount} \nPayment Option: ${paymentOption} \nPhone Account: ${phoneAccount} \nEmail: ${email} \nInvoice Number: ${invoiceNumber} \nDate: ${date}`
     );
   }
 
