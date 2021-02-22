@@ -261,27 +261,27 @@ app.post("/conversations", express.json(), (request, response) => {
     return str;
   }
 
-  function getPaymentsConfirmation(agent) {
-    const invoiceNumber = generateInvoiceNumber();
-    const accountNumber = agent.parameters.accountNumber;
-    const phone = agent.parameters["phone-number"];
-    const phoneAccount = agent.parameters.phoneAccount;
-    const paymentOption = agent.parameters.paymentOption;
-    const amount = agent.parameters.amount;
-    const email = agent.parameters.email;
-    const date = new Date();
+  // function getPaymentsConfirmation(agent) {
+  //   const invoiceNumber = generateInvoiceNumber();
+  //   const accountNumber = agent.parameters.accountNumber;
+  //   const phone = agent.parameters["phone-number"];
+  //   const phoneAccount = agent.parameters.phoneAccount;
+  //   const paymentOption = agent.parameters.paymentOption;
+  //   const amount = agent.parameters.amount;
+  //   const email = agent.parameters.email;
+  //   const date = new Date();
 
-    agent.add(
-      `Account Number: ${accountNumber} \nPhone Number: ${phone} \nAmount: ${amount.currency}$ ${amount.amount} \nPayment Option: ${paymentOption} \nPhone Account: ${phoneAccount} \nEmail: ${email} \nInvoice Number: ${invoiceNumber} \nDate: ${date}`
-    ),
-      agent.add(new Suggestion(`Confirm`)),
-      agent.add(new Suggestion(`Cancel`));
+  //   agent.add(
+  //     `Account Number: ${accountNumber} \nPhone Number: ${phone} \nAmount: ${amount.currency}$ ${amount.amount} \nPayment Option: ${paymentOption} \nPhone Account: ${phoneAccount} \nEmail: ${email} \nInvoice Number: ${invoiceNumber} \nDate: ${date}`
+  //   ),
+  //     agent.add(new Suggestion(`Confirm`)),
+  //     agent.add(new Suggestion(`Cancel`));
 
-    //For testing
-    console.log(
-      `Account Number: ${accountNumber} \nPhone Number: ${phone} \nAmount: ${amount.amount} \nPayment Option: ${paymentOption} \nPhone Account: ${phoneAccount} \nEmail: ${email} \nInvoice Number: ${invoiceNumber} \nDate: ${date}`
-    );
-  }
+  //   //For testing
+  //   console.log(
+  //     `Account Number: ${accountNumber} \nPhone Number: ${phone} \nAmount: ${amount.amount} \nPayment Option: ${paymentOption} \nPhone Account: ${phoneAccount} \nEmail: ${email} \nInvoice Number: ${invoiceNumber} \nDate: ${date}`
+  //   );
+  // }
 
   function processPayment(agent) {
     //generate a new invoice number
@@ -360,7 +360,7 @@ app.post("/conversations", express.json(), (request, response) => {
   intentMap.set("getPaymentsAmount", getPaymentsAmount);
   intentMap.set("getPaymentsAccount", getPaymentsAccount);
   intentMap.set("getPaymentsEmail", getPaymentsEmail);
-  intentMap.set("getPaymentsConfirmation", getPaymentsConfirmation);
+  // intentMap.set("getPaymentsConfirmation", getPaymentsConfirmation);
   intentMap.set("processPayment", processPayment);
 
   // intentmap request handling
