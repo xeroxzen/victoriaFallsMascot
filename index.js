@@ -273,8 +273,9 @@ app.post("/conversations", express.json(), (request, response) => {
 
     agent.add(
       `Account Number: ${accountNumber} \nPhone Number: ${phone} \nAmount: ${amount} \nPayment Option: ${paymentOption} \nPhone Account: ${phoneAccount} \nEmail: ${email} \nInvoice Number: ${invoiceNumber} \nDate: ${date}`
-    );
-    agent.add(new Suggestion(`Confirm`)), agent.add(new Suggestion(`Cancel`));
+    ),
+      agent.add(new Suggestion(`Confirm`)),
+      agent.add(new Suggestion(`Cancel`));
 
     //For testing
     console.log(
