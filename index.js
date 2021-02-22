@@ -190,7 +190,7 @@ app.post("/conversations", express.json(), (request, response) => {
 
   function getPaymentsAccountNumber(agent) {
     agent.add(
-      "Welcome to the payments portal. \n\nTo proceed with your rates payment, may we have your House number"
+      "Welcome to the payments portal. \n\nTo proceed with your rates payment, may we have your House Account Number"
     );
   }
 
