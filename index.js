@@ -267,7 +267,7 @@ app.post("/conversations", express.json(), (request, response) => {
     const phone = agent.parameters["phone-number"];
     const phoneAccount = agent.parameters.phoneAccount;
     const paymentOption = agent.parameters.paymentOption;
-    const amount = parseFloat(agent.parameters.amount);
+    const amount = agent.parameters.amount;
     const email = agent.parameters.email;
     const date = new Date();
 
@@ -290,7 +290,7 @@ app.post("/conversations", express.json(), (request, response) => {
     const phone = agent.parameters["phone-number"];
     const phoneAccount = agent.parameters.phoneAccount;
     const paymentOption = agent.parameters.paymentOption;
-    const amount = parseFloat(agent.parameters.amount);
+    const amount = agent.parameters.amount;
     const email = agent.parameters.email;
     const date = new Date();
 
