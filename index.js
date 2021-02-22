@@ -281,49 +281,6 @@ app.post("/conversations", express.json(), (request, response) => {
     console.log(
       `Account Number: ${accountNumber} \nPhone Number: ${phone} \nAmount: ${amount.amount} \nPayment Option: ${paymentOption} \nPhone Account: ${phoneAccount} \nEmail: ${email} \nInvoice Number: ${invoiceNumber} \nDate: ${date}`
     );
-
-    let paynow = new Paynow("INTEGRATION_ID", "INTEGRATION_KEY");
-    let payment = paynow.createPayment(invoiceNumber, email);
-    payment.add("Rates", amount);
-    paynow
-      .sendMobile(payment, accountNumber, paymentOption)
-      .then(function (response) {
-        if (response.success) {
-          agent.add(
-            "You have successfully paid $" +
-              amount.amount +
-              ". Your invoice number is " +
-              invoiceNumber
-          );
-          var paynowReference = response.pollUrl;
-          //save the id
-          var id = uuid();
-
-          // save to db
-          return db
-            .collection("Rates")
-            .add({
-              id: id,
-              invoiceNumber: invoiceNumber,
-              accountNumber: accountNumber,
-              phone: phone,
-              phoneAccount: phoneAccount,
-              paymentOption: paymentOption,
-              amount: amount,
-              paynowReference: paynowReference,
-              email: email,
-              date: date,
-            })
-            .then((ref) => console.log("Success"));
-        } else {
-          agent.add("Whoops something went wrong!");
-          console.log(response.error);
-        }
-      })
-      .catch((error) => {
-        agent.add("Whoops something went wrong!");
-        console.log("Something is really wrong", error);
-      });
   }
 
   function processPayment(agent) {
