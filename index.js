@@ -294,7 +294,10 @@ app.post("/conversations", express.json(), (request, response) => {
     const email = agent.parameters.email;
     const date = new Date();
 
-    let paynow = new Paynow("INTEGRATION_ID", "INTEGRATION_KEY");
+    var paynow_id = process.env.INTEGRATION_ID;
+    var paynow_key = process.env.INTEGRATION_KEY;
+
+    let paynow = new Paynow(paynow_id, paynow_key);
     let payment = paynow.createPayment(invoiceNumber, email);
     payment.add("Rates", amount);
     paynow
