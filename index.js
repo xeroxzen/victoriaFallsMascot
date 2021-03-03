@@ -190,7 +190,7 @@ app.post("/conversations", express.json(), (request, response) => {
 
   function getPaymentsAccountNumber(agent) {
     agent.add(
-      "Welcome to the payments portal. \n\nTo proceed with your rates payment, may we have your House Account Number"
+      "Welcome to the payments portal. \n\nTo proceed with your rates payment, may we have your House Account Number \n\nFormat: 32003000"
     );
   }
 
@@ -201,12 +201,6 @@ app.post("/conversations", express.json(), (request, response) => {
   function getPaymentsEmail(agent) {
     agent.add("May we have your email address?");
   }
-
-  // function getPaymentsOption(agent) {
-  //   agent.add(
-  //     "Which payment option would you like to use, EcoCash or OneMoney"
-  //   );
-  // }
 
   function getPaymentsAccount(agent) {
     agent.add("May we have your mobile money number eg 07XXXXXXXX");
@@ -222,23 +216,6 @@ app.post("/conversations", express.json(), (request, response) => {
     const date = new Date();
     const dateString = formatDate(date);
     var lastNumber = 0;
-
-    /*get last transaction today
-    await db.collection("payments")
-      .orderBy("date", "desc")
-      .limit(1)
-      .get()
-      .then(snapshot => {
-        if (snapshot.size == 0){
-          let lastID = snapshot.docs[0]['invoiceNumber'];
-          let lastDate =  snapshot.docs[0]['invoiceNumber'].toDate();
-
-          if (date.toLocaleDateString() === lastDate.toLocaleDateString()){
-            lastNumber = parseInt(lastID.substring(13, lastID.length-1));
-          }
-        }
-      });
-    */
 
     //var newNumber = (lastNumber + 1).toString();
     var newNumber = (Math.floor(Math.random() * 1000) + 1).toString();
@@ -260,28 +237,6 @@ app.post("/conversations", express.json(), (request, response) => {
     str = y + m + d;
     return str;
   }
-
-  // function getPaymentsConfirmation(agent) {
-  //   const invoiceNumber = generateInvoiceNumber();
-  //   const accountNumber = agent.parameters.accountNumber;
-  //   const phone = agent.parameters["phone-number"];
-  //   const phoneAccount = agent.parameters.phoneAccount;
-  //   const paymentOption = agent.parameters.paymentOption;
-  //   const amount = agent.parameters.amount;
-  //   const email = agent.parameters.email;
-  //   const date = new Date();
-
-  //   agent.add(
-  //     `Account Number: ${accountNumber} \nPhone Number: ${phone} \nAmount: ${amount.currency}$ ${amount.amount} \nPayment Option: ${paymentOption} \nPhone Account: ${phoneAccount} \nEmail: ${email} \nInvoice Number: ${invoiceNumber} \nDate: ${date}`
-  //   ),
-  //     agent.add(new Suggestion(`Confirm`)),
-  //     agent.add(new Suggestion(`Cancel`));
-
-  //   //For testing
-  //   console.log(
-  //     `Account Number: ${accountNumber} \nPhone Number: ${phone} \nAmount: ${amount.amount} \nPayment Option: ${paymentOption} \nPhone Account: ${phoneAccount} \nEmail: ${email} \nInvoice Number: ${invoiceNumber} \nDate: ${date}`
-  //   );
-  // }
 
   function processPayment(agent) {
     //generate a new invoice number
