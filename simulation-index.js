@@ -2,7 +2,7 @@
 //Purpose: nodejs webhook for victoria falls mascot
 "use strict";
 
-require('dotenv').config();
+require("dotenv").config();
 const express = require("express");
 const { Paynow } = require("paynow");
 const app = express();
@@ -39,28 +39,27 @@ process.unhandledRejections = "strict";
 app.get("/", (req, res) => {
   var agent = {
     parameters: {
-      accountNumber: '0771111111',
-      houseNumber: 'houseNUmber',
-      phone: '0785119174',
-      paymentOption: 'onemoney',
-      amount: 2000.00,
-      email: 'thamsanqa.mpofu@firstsourcetech.africa',
-    }
-  }
+      accountNumber: "0771111111",
+      houseNumber: "houseNUmber",
+      phone: "0785119174",
+      paymentOption: "onemoney",
+      amount: 2000.0,
+      email: "thamsanqa.mpofu@firstsourcetech.africa",
+    },
+  };
 
   processPayment(agent);
   res.send("yup, its working");
 });
 
+function generateInvoiceNumber() {
+  //invoice number format INV-yymmdd-count INV-20210218-009
+  //get date
+  const date = new Date();
+  const dateString = formatDate(date);
+  var lastNumber = 0;
 
-  function generateInvoiceNumber(){
-    //invoice number format INV-yymmdd-count INV-20210218-009
-    //get date
-    const date = new Date();
-    const dateString = formatDate(date);
-    var lastNumber = 0;
-
-    /*get last transaction today
+  /*get last transaction today
     await db.collection("payments")
       .orderBy("date", "desc")
       .limit(1)
@@ -77,78 +76,79 @@ app.get("/", (req, res) => {
       });
     */
 
-    //var newNumber = (lastNumber + 1).toString();
-    var newNumber = (Math.floor(Math.random() * 1000) + 1).toString();
-    (newNumber.length == 1) && (newNumber = '0' + newNumber);
-    (newNumber.length == 2) && (newNumber = '0' + newNumber);
+  //var newNumber = (lastNumber + 1).toString();
+  var newNumber = (Math.floor(Math.random() * 1000) + 1).toString();
+  newNumber.length == 1 && (newNumber = "0" + newNumber);
+  newNumber.length == 2 && (newNumber = "0" + newNumber);
 
-    return 'INV-' + dateString + '-' + newNumber;
-  }
+  return "INV-" + dateString + "-" + newNumber;
+}
 
-  function formatDate(date){
-    let str = "";
-    var y = date.getFullYear().toString();
-    var m = (date.getMonth() + 1).toString();
-    var d = date.getDate().toString();
+function formatDate(date) {
+  let str = "";
+  var y = date.getFullYear().toString();
+  var m = (date.getMonth() + 1).toString();
+  var d = date.getDate().toString();
 
-    (d.length == 1) && (d = '0' + d);
-    (m.length == 1) && (m = '0' + m);
+  d.length == 1 && (d = "0" + d);
+  m.length == 1 && (m = "0" + m);
 
-    str = y + m + d;
-    return str;
-  }
+  str = y + m + d;
+  return str;
+}
 
-  function processPayment(agent){
-    //generate a new invoice nummber
-    const invoiceNumber = generateInvoiceNumber();
-    const accountNumber = agent.parameters.accountNumber;
-    const houseNumber = agent.parameters.houseNumber;
-    const phone = agent.parameters.phone;
-    const paymentOption = agent.parameters.paymentOption;
-    const amount = parseFloat(agent.parameters.amount);
-    const email = agent.parameters.email;
-    const date = new Date();
+function processPayment(agent) {
+  //generate a new invoice nummber
+  const invoiceNumber = generateInvoiceNumber();
+  const accountNumber = agent.parameters.accountNumber;
+  const houseNumber = agent.parameters.houseNumber;
+  const phone = agent.parameters.phone;
+  const paymentOption = agent.parameters.paymentOption;
+  const amount = parseFloat(agent.parameters.amount);
+  const email = agent.parameters.email;
+  const date = new Date();
 
-    let paynow = new Paynow(process.env.PAYNOW_INTEGRATION_ID, process.env.PAYNOW_INTEGRATION_KEY);
-    let payment = paynow.createPayment(invoiceNumber, email);
-    payment.add("Rates", amount);
-    paynow.sendMobile(payment, accountNumber, paymentOption)
-      .then(function(response) {
-        if(response.success) {
-          //agent.add("You have successfully paid $" + agent.parameters.amount + ". Your invoice number is " +invoiceNumber);
-          var paynowReference = response.pollUrl;
-          //save the id
-          var id = uuid();
+  let paynow = new Paynow(
+    process.env.PAYNOW_INTEGRATION_ID,
+    process.env.PAYNOW_INTEGRATION_KEY
+  );
+  let payment = paynow.createPayment(invoiceNumber, email);
+  payment.add("Rates", amount);
+  paynow
+    .sendMobile(payment, accountNumber, paymentOption)
+    .then(function (response) {
+      if (response.success) {
+        //agent.add("You have successfully paid $" + agent.parameters.amount + ". Your invoice number is " +invoiceNumber);
+        var paynowReference = response.pollUrl;
+        //save the id
+        var id = uuid();
 
-          // save to db
-          return db
-            .collection("Rates")
-            .add({
-              id: id,
-              invoiceNumber: invoiceNumber,
-              accountNumber: accountNumber,
-              houseNumber: houseNumber,
-              phone: phone,
-              paymentOption: paymentOption,
-              amount: amount,
-              paynowReference: paynowReference,
-              email: email,
-              date: date,
-            })
-            .then(
-              ref =>
-                console.log("Success")
-            );
-        } else {
-          //gent.add("Whoops something went wrong!");
-          console.log(response.error);
-        }
-    }).catch(ex => {
+        // save to db
+        return db
+          .collection("Rates")
+          .add({
+            id: id,
+            invoiceNumber: invoiceNumber,
+            accountNumber: accountNumber,
+            houseNumber: houseNumber,
+            phone: phone,
+            paymentOption: paymentOption,
+            amount: amount,
+            paynowReference: paynowReference,
+            email: email,
+            date: date,
+          })
+          .then((ref) => console.log("Success"));
+      } else {
+        //gent.add("Whoops something went wrong!");
+        console.log(response.error);
+      }
+    })
+    .catch((ex) => {
       //agent.add("Whoops something went wrong!");
-      console.log("Something is really wrong", ex)
-    });  
-
-  }
+      console.log("Something is really wrong", ex);
+    });
+}
 
 app.post("/conversations", express.json(), (request, response) => {
   const agent = new WebhookClient({ request: request, response: response });
@@ -309,7 +309,7 @@ app.post("/conversations", express.json(), (request, response) => {
 
   function getPaymentsHouseNumber(agent) {
     agent.add(
-      "Welcome to the payments portal. \n\nTo proceed with your rates payment, may we have your House number"
+      "Welcome to the payments portal. \n\nTo proceed with your rates payment, may we have your house account number \n\nExample: 32003000"
     );
   }
 
@@ -322,7 +322,9 @@ app.post("/conversations", express.json(), (request, response) => {
   }
 
   function getPaymentsOption(agent) {
-    agent.add("Which payment option would you like to use, EcoCash or OneMoney");
+    agent.add(
+      "Which payment option would you like to use, EcoCash or OneMoney"
+    );
   }
 
   function getPaymentsAccount(agent) {
@@ -348,7 +350,7 @@ app.post("/conversations", express.json(), (request, response) => {
     );
   }
 
-  function generateInvoiceNumber(){
+  function generateInvoiceNumber() {
     //invoice number format INV-yymmdd-count INV-20210218-009
     //get date
     const date = new Date();
@@ -374,26 +376,26 @@ app.post("/conversations", express.json(), (request, response) => {
 
     //var newNumber = (lastNumber + 1).toString();
     var newNumber = (Math.floor(Math.random() * 1000) + 1).toString();
-    (newNumber.length == 1) && (newNumber = '0' + newNumber);
-    (newNumber.length == 2) && (newNumber = '0' + newNumber);
+    newNumber.length == 1 && (newNumber = "0" + newNumber);
+    newNumber.length == 2 && (newNumber = "0" + newNumber);
 
-    return 'INV-' + dateString + '-' + newNumber;
+    return "INV-" + dateString + "-" + newNumber;
   }
 
-  function formatDate(date){
+  function formatDate(date) {
     let str = "";
     var y = date.getFullYear().toString();
     var m = (date.getMonth() + 1).toString();
     var d = date.getDate().toString();
 
-    (d.length == 1) && (d = '0' + d);
-    (m.length == 1) && (m = '0' + m);
+    d.length == 1 && (d = "0" + d);
+    m.length == 1 && (m = "0" + m);
 
     str = y + m + d;
     return str;
   }
 
-  function processPayment(agent){
+  function processPayment(agent) {
     //generate a new invoice nummber
     const invoiceNumber = generateInvoiceNumber();
     const accountNumber = agent.parameters.accountNumber;
@@ -404,13 +406,19 @@ app.post("/conversations", express.json(), (request, response) => {
     const email = agent.parameters.email;
     const date = new Date();
 
-  	let paynow = new Paynow("INTEGRATION_ID", "INTEGRATION_KEY");
-  	let payment = paynow.createPayment(invoiceNumber, email);
-  	payment.add("Rates", amount);
-  	paynow.sendMobile(payment, accountNumber, paymentOption)
-      .then(function(response) {
-  	    if(response.success) {
-          agent.add("You have successfully paid $" + agent.parameters.amount + ". Your invoice number is " +invoiceNumber);
+    let paynow = new Paynow("INTEGRATION_ID", "INTEGRATION_KEY");
+    let payment = paynow.createPayment(invoiceNumber, email);
+    payment.add("Rates", amount);
+    paynow
+      .sendMobile(payment, accountNumber, paymentOption)
+      .then(function (response) {
+        if (response.success) {
+          agent.add(
+            "You have successfully paid $" +
+              agent.parameters.amount +
+              ". Your invoice number is " +
+              invoiceNumber
+          );
           var paynowReference = response.pollUrl;
           //save the id
           var id = uuid();
@@ -430,19 +438,16 @@ app.post("/conversations", express.json(), (request, response) => {
               email: email,
               date: date,
             })
-            .then(
-              ref =>
-                console.log("Success")
-            );
-  	    } else {
+            .then((ref) => console.log("Success"));
+        } else {
           addgent.add("Whoops something went wrong!");
-  	      console.log(response.error);
-  	    }
-  	}).catch(ex => {
-      agent.add("Whoops something went wrong!");
-  	  console.log("Something is really wrong", ex)
-  	});  
-
+          console.log(response.error);
+        }
+      })
+      .catch((ex) => {
+        agent.add("Whoops something went wrong!");
+        console.log("Something is really wrong", ex);
+      });
   }
 
   // let's setup intentMaps
