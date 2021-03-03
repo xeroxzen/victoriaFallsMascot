@@ -93,15 +93,13 @@ app.post("/conversations", express.json(), (request, response) => {
   }
 
   function saveComplaint(agent) {
-    // var complaint = agent.context.get("saveComplaint").parameters.complaint;
-    agent.add("Thank you for your invaluable input.");
-
     var complaint = agent.parameters.complaint;
     var complaintsDate = new Date();
 
     //save the id
     var id = uuid();
 
+    // agent.add("Thank you for your invaluable input.");
     // save to db
     return db
       .collection("Complaints")
@@ -113,8 +111,8 @@ app.post("/conversations", express.json(), (request, response) => {
       .then(
         (ref) =>
           // fetching free slots
-          console.log("Saved to DB")
-        // agent.add("Take care!.")
+          console.log("Saved to DB"),
+        agent.add("Thank you for you invaluable input.")
       );
   }
 
@@ -126,8 +124,6 @@ app.post("/conversations", express.json(), (request, response) => {
     var id = uuid();
     var recommendation = agent.parameters.recommendation;
     var recommendationDate = new Date();
-
-    agent.add("Thank you for your invaluable recommendation");
 
     // save to db
     return db
@@ -141,6 +137,7 @@ app.post("/conversations", express.json(), (request, response) => {
         (ref) =>
           // fetching free slots
           console.log("Saved to DB"),
+        agent.add("Thank you for your invaluable recommendation"),
         agent.add("Take care!.")
       );
   }

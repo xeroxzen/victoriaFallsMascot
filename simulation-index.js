@@ -40,11 +40,11 @@ app.get("/", (req, res) => {
   var agent = {
     parameters: {
       accountNumber: "0771111111",
-      houseNumber: "houseNUmber",
+      houseNumber: "39905481",
       phone: "0785119174",
-      paymentOption: "onemoney",
+      paymentOption: "ecocash",
       amount: 2000.0,
-      email: "thamsanqa.mpofu@firstsourcetech.africa",
+      email: "andile.mbele@firstsourcetech.africa",
     },
   };
 
