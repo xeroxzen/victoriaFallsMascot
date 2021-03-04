@@ -9,6 +9,7 @@ const { Paynow } = require("paynow");
 const { WebhookClient } = require("dialogflow-fulfillment");
 const { Card, Suggestion } = require("dialogflow-fulfillment");
 const { uuid } = require("uuidv4");
+require('dotenv').config()
 
 //security credentials
 var admin = require("firebase-admin");
