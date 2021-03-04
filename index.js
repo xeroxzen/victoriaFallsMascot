@@ -1,5 +1,6 @@
 //Author: Andile Jaden Mbele
 //Purpose: nodejs webhook for victoria falls mascot
+//https://victoria-falls-mascot.herokuapp.com/conversations
 "use strict";
 
 const express = require("express");
@@ -207,6 +208,22 @@ app.post("/conversations", express.json(), (request, response) => {
     agent.add("Amount to be paid in ZWL e.g 500.90");
   }
 
+  function getPaymentsOption(agent){
+    /*
+    agent.context.set({
+      'name':'backend-captured-email',
+      'lifespan': 5,
+      'parameters':{
+        'email':agent.query
+        }
+    });
+    */
+    agent.add("Which payment method would you like to use?");
+    agent.add(new Suggestion("Ecocash"));
+    agent.add(new Suggestion("OneMoney"));
+    agent.add(new Suggestion("Telecash"));
+  }
+
   function generateInvoiceNumber() {
     //invoice number format INV-yymmdd-count INV-20210218-009
     //get date
@@ -235,15 +252,15 @@ app.post("/conversations", express.json(), (request, response) => {
     return str;
   }
 
-  function processPayment(agent) {
+  async function processPayment(agent) {
     //generate a new invoice number
     const invoiceNumber = generateInvoiceNumber();
-    const accountNumber = agent.parameters.accountNumber;
-    const phone = agent.parameters["phone-number"];
-    const phoneAccount = agent.parameters.phoneAccount;
-    const paymentOption = agent.parameters.paymentOption;
-    const amount = agent.parameters.amount;
-    const email = agent.parameters.email;
+    const accountNumber = agent.context.get("payment-followup").parameters.accountNumber;
+    const phone = agent.context.get("paymentphone").parameters['phone-number'];
+    const phoneAccount = agent.context.get("getpaymentsaccount-followup").parameters.phoneAccount;
+    const paymentOption = agent.context.get("getpaymentsoption-followup").parameters.paymentOption;
+    const amount = agent.context.get("getpaymentsamount-followup").parameters.amount;
+    const email = agent.context.get("getpaymentsemail-followup").parameters.email;
     const date = new Date();
 
     var paynow_id = process.env.INTEGRATION_ID;
@@ -251,46 +268,40 @@ app.post("/conversations", express.json(), (request, response) => {
 
     let paynow = new Paynow(paynow_id, paynow_key);
     let payment = paynow.createPayment(invoiceNumber, email);
-    payment.add("Rates", amount);
-    paynow
-      .sendMobile(payment, accountNumber, paymentOption)
-      .then(function (response) {
-        if (response.success) {
-          agent.add(
-            "You have successfully paid $" +
-              amount.amount +
-              ". Your invoice number is " +
-              invoiceNumber
-          );
-          var paynowReference = response.pollUrl;
-          //save the id
-          var id = uuid();
+    payment.add("Rates", parseFloat(amount.amount));
 
-          // save to db
-          return db
-            .collection("Rates")
-            .add({
-              id: id,
-              invoiceNumber: invoiceNumber,
-              accountNumber: accountNumber,
-              phone: phone,
-              phoneAccount: phoneAccount,
-              paymentOption: paymentOption,
-              amount: amount,
-              paynowReference: paynowReference,
-              email: email,
-              date: date,
-            })
-            .then((ref) => console.log("Success"));
-        } else {
-          agent.add("Whoops something went wrong!");
-          console.log(response.error);
-        }
-      })
-      .catch((error) => {
-        agent.add("Whoops something went wrong!");
-        console.log("Something is really wrong", error);
-      });
+    response = await paynow.sendMobile(payment, phoneAccount, paymentOption.toLowerCase());
+    if (response.success) {
+      var paynowReference = response.pollUrl;
+      agent.add(
+        "You have successfully paid $" +
+          amount.amount +
+          ". Your invoice number is " +
+          invoiceNumber + ". The paynow reference is " + paynowReference
+      );
+      //save the id
+      var id = uuid();
+
+      // save to db
+      return db
+        .collection("Rates")
+        .add({
+          id: id,
+          invoiceNumber: invoiceNumber,
+          accountNumber: accountNumber,
+          phone: phone,
+          phoneAccount: phoneAccount,
+          paymentOption: paymentOption,
+          amount: amount,
+          paynowReference: paynowReference,
+          email: email,
+          date: date,
+        })
+        .then((ref) => console.log("Success"));
+    } else {
+      agent.add("Whoops something went wrong!");
+      console.log(response.error);
+    }
   }
 
   // let's setup intentMaps
@@ -315,6 +326,7 @@ app.post("/conversations", express.json(), (request, response) => {
   intentMap.set("getPaymentsAmount", getPaymentsAmount);
   intentMap.set("getPaymentsAccount", getPaymentsAccount);
   intentMap.set("getPaymentsEmail", getPaymentsEmail);
+  intentMap.set("getPaymentsOption", getPaymentsOption);
   // intentMap.set("getPaymentsConfirmation", getPaymentsConfirmation);
   intentMap.set("processPayment", processPayment);
 
