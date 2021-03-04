@@ -9,7 +9,7 @@ const { Paynow } = require("paynow");
 const { WebhookClient } = require("dialogflow-fulfillment");
 const { Card, Suggestion } = require("dialogflow-fulfillment");
 const { uuid } = require("v4");
-require('dotenv').config()
+require("dotenv").config();
 
 //security credentials
 var admin = require("firebase-admin");
@@ -146,19 +146,20 @@ app.post("/conversations", express.json(), (request, response) => {
 
   function saveToDB(agent) {
     // Simpler format
-    const age = agent.parameters["ageGroups"];
-    const gender = agent.parameters["gender"];
-    const symptoms = agent.parameters["symptoms"];
-    const phone = agent.parameters["phone"];
+    // const age = agent.parameters["ageGroups"];
+    // const gender = agent.parameters["gender"];
+    // const symptoms = agent.parameters["symptoms"];
+    // const phone = agent.parameters["phone"];
 
     // the older way
-    const ageGrp = agent.context.get("coronavirusGender-followup").parameters.ageGroups
-    const sex = agent.context.get("coronavirusSymptoms-followup
-").parameters.gender;
-const symptom = agent.context.get("coronavirusPhone-followup
-").parameters.symptoms;
-const cellNumber = agent.context.get("confirmDetails-followup
-").parameters.phone;
+    const ageGrp = agent.context.get("coronavirusGender-followup").parameters
+      .ageGroups;
+    const sex = agent.context.get("coronavirusSymptoms-followup").parameters
+      .gender;
+    const symptom = agent.context.get("coronavirusPhone-followup").parameters
+      .symptoms;
+    const cellNumber = agent.context.get("confirmDetails-followup").parameters
+      .phone;
 
     //get the id
     const id = uuid();
@@ -166,12 +167,12 @@ const cellNumber = agent.context.get("confirmDetails-followup
     const time = new Date();
 
     //testing
-    console.log(
-      `Age: ${age} \nSex: ${gender} Phone: ${phone} \nSymptom: ${symptoms} \nTime: ${time}`
-    );
+    // console.log(
+    //   `Age: ${age} \nSex: ${gender} Phone: ${phone} \nSymptom: ${symptoms} \nTime: ${time}`
+    // );
 
     console.log(
-      `Age: ${ageGrp} \nSex: ${sex} Phone: ${cellNumber} \nSymptom: ${symptoms\} \nTime: ${time}`
+      `Age: ${ageGrp} \nSex: ${sex} \nPhone: ${cellNumber} \nSymptom: ${symptom} \nTime: ${time}`
     );
 
     // save to db
@@ -179,11 +180,11 @@ const cellNumber = agent.context.get("confirmDetails-followup
       .collection("userDiagnosis")
       .add({
         id: id,
-        age: age,
-        gender: gender,
-        symptoms: symptoms,
-        phone: phone,
-        time: time,
+        // age: age,
+        // gender: gender,
+        // symptoms: symptoms,
+        // phone: phone,
+        // time: time,
         // old formatDate
         ageGrp: ageGrp,
         sex: sex,
@@ -227,7 +228,7 @@ const cellNumber = agent.context.get("confirmDetails-followup
     agent.add("Amount to be paid in ZWL e.g 500.90");
   }
 
-  function getPaymentsOption(agent){
+  function getPaymentsOption(agent) {
     /*
     agent.context.set({
       'name':'backend-captured-email',
@@ -274,12 +275,17 @@ const cellNumber = agent.context.get("confirmDetails-followup
   async function processPayment(agent) {
     //generate a new invoice number
     const invoiceNumber = generateInvoiceNumber();
-    const accountNumber = agent.context.get("payment-followup").parameters.accountNumber;
-    const phone = agent.context.get("paymentphone").parameters['phone-number'];
-    const phoneAccount = agent.context.get("getpaymentsaccount-followup").parameters.phoneAccount;
-    const paymentOption = agent.context.get("getpaymentsoption-followup").parameters.paymentOption;
-    const amount = agent.context.get("getpaymentsamount-followup").parameters.amount;
-    const email = agent.context.get("getpaymentsemail-followup").parameters.email;
+    const accountNumber = agent.context.get("payment-followup").parameters
+      .accountNumber;
+    const phone = agent.context.get("paymentphone").parameters["phone-number"];
+    const phoneAccount = agent.context.get("getpaymentsaccount-followup")
+      .parameters.phoneAccount;
+    const paymentOption = agent.context.get("getpaymentsoption-followup")
+      .parameters.paymentOption;
+    const amount = agent.context.get("getpaymentsamount-followup").parameters
+      .amount;
+    const email = agent.context.get("getpaymentsemail-followup").parameters
+      .email;
     const date = new Date();
 
     var paynow_id = process.env.INTEGRATION_ID;
@@ -289,14 +295,20 @@ const cellNumber = agent.context.get("confirmDetails-followup
     let payment = paynow.createPayment(invoiceNumber, email);
     payment.add("Rates", parseFloat(amount.amount));
 
-    response = await paynow.sendMobile(payment, phoneAccount, paymentOption.toLowerCase());
+    response = await paynow.sendMobile(
+      payment,
+      phoneAccount,
+      paymentOption.toLowerCase()
+    );
     if (response.success) {
       var paynowReference = response.pollUrl;
       agent.add(
         "You have successfully paid $" +
           amount.amount +
           ". Your invoice number is " +
-          invoiceNumber + ". The paynow reference is " + paynowReference
+          invoiceNumber +
+          ". The paynow reference is " +
+          paynowReference
       );
       //save the id
       var id = uuid();
