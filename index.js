@@ -151,6 +151,15 @@ app.post("/conversations", express.json(), (request, response) => {
     const symptoms = agent.parameters["symptoms"];
     const phone = agent.parameters["phone"];
 
+    // the older way
+    const ageGrp = agent.context.get("coronavirusGender-followup").parameters.ageGroups
+    const sex = agent.context.get("coronavirusSymptoms-followup
+").parameters.gender;
+const symptom = agent.context.get("coronavirusPhone-followup
+").parameters.symptoms;
+const cellNumber = agent.context.get("confirmDetails-followup
+").parameters.phone;
+
     //get the id
     const id = uuid();
     //let's get the time
@@ -158,7 +167,11 @@ app.post("/conversations", express.json(), (request, response) => {
 
     //testing
     console.log(
-      `Age: ${age} \nSex: ${gender} \nSymptom: ${symptoms} \nTime: ${time}`
+      `Age: ${age} \nSex: ${gender} Phone: ${phone} \nSymptom: ${symptoms} \nTime: ${time}`
+    );
+
+    console.log(
+      `Age: ${ageGrp} \nSex: ${sex} Phone: ${cellNumber} \nSymptom: ${symptoms\} \nTime: ${time}`
     );
 
     // save to db
@@ -171,6 +184,11 @@ app.post("/conversations", express.json(), (request, response) => {
         symptoms: symptoms,
         phone: phone,
         time: time,
+        // old formatDate
+        ageGrp: ageGrp,
+        sex: sex,
+        symptom: symptom,
+        cellNumber: cellNumber,
       })
       .then(
         (ref) =>
@@ -271,7 +289,7 @@ app.post("/conversations", express.json(), (request, response) => {
     let payment = paynow.createPayment(invoiceNumber, email);
     payment.add("Rates", parseFloat(amount.amount));
 
-    response = await paynow.sendMobile(payment, phoneAccount, 'Ecocash'.toLowerCase());
+    response = await paynow.sendMobile(payment, phoneAccount, paymentOption.toLowerCase());
     if (response.success) {
       var paynowReference = response.pollUrl;
       agent.add(
