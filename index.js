@@ -8,7 +8,7 @@ const app = express();
 const { Paynow } = require("paynow");
 const { WebhookClient } = require("dialogflow-fulfillment");
 const { Card, Suggestion } = require("dialogflow-fulfillment");
-const { uuid } = require("v4");
+const { uuid } = require("uuidv4");
 require("dotenv").config();
 
 //security credentials
