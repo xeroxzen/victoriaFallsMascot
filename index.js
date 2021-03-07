@@ -9,7 +9,7 @@ const { Paynow } = require("paynow");
 const { WebhookClient } = require("dialogflow-fulfillment");
 const { Card, Suggestion } = require("dialogflow-fulfillment");
 const { uuid } = require("uuidv4");
-// require("dotenv").config();
+require("dotenv").config();
 
 //security credentials
 var admin = require("firebase-admin");
@@ -291,7 +291,7 @@ app.post("/conversations", express.json(), (request, response) => {
     var paynow_id = process.env.INTEGRATION_ID;
     var paynow_key = process.env.INTEGRATION_KEY;
 
-    let paynow = new Paynow(paynow_id, paynow_key);
+    let paynow = new Paynow("11700", "f9e7af51-2b09-4803-a115-44124734ec3e");
     let payment = paynow.createPayment(invoiceNumber, email);
     payment.add("Rates", parseFloat(amount.amount));
 
