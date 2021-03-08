@@ -327,7 +327,7 @@ app.post("/conversations", express.json(), (request, response) => {
     payment.add("Rates", parseFloat(amount.amount));
 
     paynow
-      .sendMobile(payment, predefinedAccount, predefinedPaymentOption)
+      .sendMobile(payment, account, option)
       .then((response) => {
         if (response.success) {
           // These are the instructions to show the user.
@@ -351,10 +351,10 @@ app.post("/conversations", express.json(), (request, response) => {
             .add({
               id: id,
               invoiceNumber: invoiceNumber,
-              accountNumber: account,
+              accountNumber: accountNumber,
               phone: phone,
               phoneAccount: account,
-              paymentOption: paymentOption,
+              paymentOption: option,
               amount: amount,
               paynowReference: paynowReference,
               email: email,
