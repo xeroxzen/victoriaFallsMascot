@@ -291,7 +291,7 @@ app.post("/conversations", express.json(), (request, response) => {
     var paynow_id = process.env.INTEGRATION_ID;
     var paynow_key = process.env.INTEGRATION_KEY;
 
-    let paynow = new Paynow("11700", "f9e7af51-2b09-4803-a115-44124734ec3e");
+    let paynow = new Paynow("11734", "0586e460-df4b-409b-948b-940c0fd485fb");
     let payment = paynow.createPayment(invoiceNumber, email);
     payment.add("Rates", parseFloat(amount.amount));
 
