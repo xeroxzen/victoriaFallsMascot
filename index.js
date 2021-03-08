@@ -283,7 +283,7 @@ app.post("/conversations", express.json(), (request, response) => {
       .email;
 
     console.log(
-      `House Account #: ${accountNumber} \nPhone: ${phone} \nPayment Account: ${phoneAccount} \nPayment Option: ${paymentOption} \nAmount $ ${amount.amount} \nEmail: ${email}`
+      `House Account #: ${accountNumber} \nPhone: ${phone} \nPayment Account: ${phoneAccount} \nPayment Option: ${paymentOption} \nAmount $ ${amount} \nEmail: ${email}`
     );
 
     agent.add("Amount to be paid in ZWL e.g 500.90");
