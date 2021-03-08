@@ -206,44 +206,6 @@ app.post("/conversations", express.json(), (request, response) => {
 
   //Payments
 
-  function getPaymentsAccountNumber(agent) {
-    agent.add(
-      "Welcome to the payments portal. \n\nTo proceed with your rates payment, may we have your House Account Number \n\nFormat: 32003000"
-    );
-  }
-
-  function getPaymentsPhone(agent) {
-    agent.add("May we have your phone number? \n\nFormat +263779545334");
-  }
-
-  function getPaymentsEmail(agent) {
-    agent.add("May we have your email address?");
-  }
-
-  function getPaymentsAccount(agent) {
-    agent.add("May we have your mobile money number eg 07XXXXXXXX");
-  }
-
-  function getPaymentsAmount(agent) {
-    agent.add("Amount to be paid in ZWL e.g 500.90");
-  }
-
-  function getPaymentsOption(agent) {
-    /*
-    agent.context.set({
-      'name':'backend-captured-email',
-      'lifespan': 5,
-      'parameters':{
-        'email':agent.query
-        }
-    });
-    */
-    agent.add("Which payment method would you like to use?");
-    agent.add(new Suggestion("ecocash"));
-    agent.add(new Suggestion("onemoney"));
-    agent.add(new Suggestion("telecash"));
-  }
-
   function generateInvoiceNumber() {
     //invoice number format INV-yymmdd-count INV-20210218-009
     //get date
@@ -270,6 +232,61 @@ app.post("/conversations", express.json(), (request, response) => {
 
     str = y + m + d;
     return str;
+  }
+
+  function getPaymentsAccountNumber(agent) {
+    agent.add(
+      "Welcome to the payments portal. \n\nTo proceed with your rates payment, may we have your House Account Number \n\nFormat: 32003000"
+    );
+  }
+
+  function getPaymentsPhone(agent) {
+    agent.add("May we have your phone number? \n\nFormat 0779545334");
+  }
+
+  function getPaymentsEmail(agent) {
+    agent.add("May we have your email address? \n\nExample: vfm@example.com");
+  }
+
+  function getPaymentsAccount(agent) {
+    agent.add("May we have your mobile money number eg 07XXXXXXXX");
+  }
+
+  function getPaymentsOption(agent) {
+    /*
+    agent.context.set({
+      'name':'backend-captured-email',
+      'lifespan': 5,
+      'parameters':{
+        'email':agent.query
+        }
+    });
+    */
+    agent.add("Which payment method would you like to use?");
+    agent.add(new Suggestion("ecocash"));
+    agent.add(new Suggestion("onemoney"));
+    agent.add(new Suggestion("telecash"));
+  }
+
+  function getPaymentsAmount(agent) {
+    // const invoiceNumber = generateInvoiceNumber();
+    const accountNumber = agent.context.get("payment-followup").parameters
+      .accountNumber;
+    const phone = agent.context.get("paymentphone").parameters["phone-number"];
+    const phoneAccount = agent.context.get("getpaymentsaccount-followup")
+      .parameters.phoneAccount;
+    const paymentOption = agent.context.get("getpaymentsoption-followup")
+      .parameters.paymentOption;
+    const amount = agent.context.get("getpaymentsamount-followup").parameters
+      .amount;
+    const email = agent.context.get("getpaymentsemail-followup").parameters
+      .email;
+
+    console.log(
+      `House Account #: ${accountNumber} \nPhone: ${phone} \nPayment Account: ${phoneAccount} \nPayment Option: ${paymentOption} \nAmount $ ${amount.amount} \nEmail: ${email}`
+    );
+
+    agent.add("Amount to be paid in ZWL e.g 500.90");
   }
 
   // --unhandled-rejections=strict
@@ -309,7 +326,7 @@ app.post("/conversations", express.json(), (request, response) => {
     payment.add("Rates", parseFloat(amount.amount));
 
     paynow
-      .sendMobile(payment, phoneAccount, paymentOption)
+      .sendMobile(payment, phoneAccount, paymentOption.toLowerCase())
       .then((response) => {
         if (response.success) {
           // These are the instructions to show the user.
