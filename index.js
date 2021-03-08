@@ -338,6 +338,10 @@ app.post("/conversations", express.json(), (request, response) => {
           // pollUrl for the transaction
           let paynowReference = response.pollUrl;
 
+          agent.add(
+            `You have successfully paid $${amount.amount}. Your invoice number is ${invoiceNumber}. The paynow reference is ${paynowReference}`
+          );
+
           //save
           return db
             .collection("Rates")
