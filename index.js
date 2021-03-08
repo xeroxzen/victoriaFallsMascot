@@ -310,10 +310,13 @@ app.post("/conversations", express.json(), (request, response) => {
 
     paynow
       .sendMobile(payment, phoneAccount, paymentOption)
-      .then(function (response) {
+      .then((response) => {
         if (response.success) {
           // These are the instructions to show the user.
           // Instruction for how the user can make a payment
+          // Get the link to redirect the user to, then use it as you see fit
+          let link = response.redirectUrl;
+
           let instructions = response.instructions;
 
           console.log(instructions);
