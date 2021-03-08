@@ -284,11 +284,10 @@ app.post("/conversations", express.json(), (request, response) => {
   function processPayment(agent) {
     //generate a new invoice number
     const invoiceNumber = generateInvoiceNumber();
-    const accountNumber = agent.context.get("payment-followup");
+    const accountNumber = agent.parameters.accountNumber;
     const phone = agent.context.get("paymentphone").parameters["phone-number"];
-    const phoneAccount = agent.context.get("getpaymentsaccount-followup");
-    const paymentOption = agent.context.get("getpaymentsoption-followup")
-      .parameters.paymentOption;
+    const phoneAccount = agent.parameters.phoneAccount;
+    const paymentOption = agent.parameters.paymentOption;
     const amount = agent.context.get("getpaymentsamount-followup").parameters
       .amount;
     const email = agent.context.get("getpaymentsemail-followup").parameters
