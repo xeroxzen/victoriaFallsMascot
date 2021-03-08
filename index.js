@@ -200,7 +200,8 @@ app.post("/conversations", express.json(), (request, response) => {
           "Thank you for your cooperation. \n\nIn the meantime we advise you to remain at home in self-isolation. Our Rapid Response Team will contact you shortly"
         ),
         agent.add(new Suggestion(`Hello again`)),
-        agent.add(new Suggestion(`Bye for now`))
+        agent.add(new Suggestion(`Bye for now`)),
+        agent.end("")
       );
   }
 
@@ -238,18 +239,22 @@ app.post("/conversations", express.json(), (request, response) => {
     agent.add(
       "Welcome to the payments portal. \n\nTo proceed with your rates payment, may we have your House Account Number \n\nFormat: 32003000"
     );
+    agent.end("");
   }
 
   function getPaymentsPhone(agent) {
     agent.add("May we have your phone number? \n\nFormat 0779545334");
+    agent.end("");
   }
 
   function getPaymentsEmail(agent) {
     agent.add("May we have your email address? \n\nExample: vfm@example.com");
+    agent.end("");
   }
 
   function getPaymentsAccount(agent) {
     agent.add("May we have your mobile money number eg 07XXXXXXXX");
+    agent.end("");
   }
 
   function getPaymentsOption(agent) {
@@ -270,6 +275,7 @@ app.post("/conversations", express.json(), (request, response) => {
 
   function getPaymentsAmount(agent) {
     agent.add("Amount to be paid in ZWL e.g 500.90");
+    agent.end("");
   }
 
   // --unhandled-rejections=strict
