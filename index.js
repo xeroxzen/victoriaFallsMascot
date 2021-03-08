@@ -239,9 +239,9 @@ app.post("/conversations", express.json(), (request, response) => {
     });
     */
     agent.add("Which payment method would you like to use?");
-    agent.add(new Suggestion("Ecocash"));
-    agent.add(new Suggestion("OneMoney"));
-    agent.add(new Suggestion("Telecash"));
+    agent.add(new Suggestion("ecocash"));
+    agent.add(new Suggestion("onemoney"));
+    agent.add(new Suggestion("telecash"));
   }
 
   function generateInvoiceNumber() {
@@ -309,7 +309,7 @@ app.post("/conversations", express.json(), (request, response) => {
     payment.add("Rates", parseFloat(amount.amount));
 
     paynow
-      .sendMobile(payment, "0771111111", "ecocash")
+      .sendMobile(payment, phoneAccount, paymentOption)
       .then((response) => {
         if (response.success) {
           // These are the instructions to show the user.
@@ -323,14 +323,6 @@ app.post("/conversations", express.json(), (request, response) => {
           // pollUrl for the transaction
           let paynowReference = response.pollUrl;
 
-          agent.add(
-            "You have successfully paid $" +
-              amount.amount +
-              ". Your invoice number is " +
-              invoiceNumber +
-              ". The paynow reference is " +
-              paynowReference
-          );
           //save
           return db
             .collection("Rates")
@@ -347,8 +339,15 @@ app.post("/conversations", express.json(), (request, response) => {
               date: date,
             })
             .then(
-              (ref) => console.log("Success"),
-              agent.add("Payment was successful")
+              (ref) => console.log("Transaction successful"),
+              agent.add(
+                "You have successfully paid $" +
+                  amount.amount +
+                  ". Your invoice number is " +
+                  invoiceNumber +
+                  ". The paynow reference is " +
+                  paynowReference
+              )
             );
         } else {
           agent.add("Whoops something went wrong!");
