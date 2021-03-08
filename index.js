@@ -257,12 +257,6 @@ app.post("/conversations", express.json(), (request, response) => {
     // return phoneAccount;
   }
 
-  function payPhone() {
-    let phone = getPaymentsAccount(agent);
-
-    return phone;
-  }
-
   function getPaymentsOption(agent) {
     /*
     agent.context.set({
@@ -293,7 +287,7 @@ app.post("/conversations", express.json(), (request, response) => {
     const accountNumber = agent.context.get("payment-followup").parameters
       .accountNumber;
     const phone = agent.context.get("paymentphone").parameters["phone-number"];
-    const phoneAccount = payPhone();
+    const phoneAccount = getPaymentsAccount(agent);
     const paymentOption = agent.context.get("getpaymentsoption-followup")
       .parameters.paymentOption;
     const amount = agent.context.get("getpaymentsamount-followup").parameters
