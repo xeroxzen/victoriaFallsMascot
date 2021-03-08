@@ -272,7 +272,9 @@ app.post("/conversations", express.json(), (request, response) => {
     return str;
   }
 
-  async function processPayment(agent) {
+  // --unhandled-rejections=strict
+
+  function processPayment(agent) {
     //generate a new invoice number
     const invoiceNumber = generateInvoiceNumber();
     const accountNumber = agent.context.get("payment-followup").parameters
@@ -286,53 +288,73 @@ app.post("/conversations", express.json(), (request, response) => {
       .amount;
     const email = agent.context.get("getpaymentsemail-followup").parameters
       .email;
+
+    //save the id
+    const id = uuid();
     const date = new Date();
 
     var paynow_id = process.env.INTEGRATION_ID;
     var paynow_key = process.env.INTEGRATION_KEY;
 
     let paynow = new Paynow("11734", "0586e460-df4b-409b-948b-940c0fd485fb");
+
+    //Set return and return urls
+    paynow.resultUrl = "http://example.com/gateways/paynow/update";
+    paynow.returnUrl =
+      "http://example.com/return?gateway=paynow&merchantReference=1234";
+
+    // create a new payment
     let payment = paynow.createPayment(invoiceNumber, email);
-    payment.add("Rates", parseFloat(amount.amount));
 
-    var response = await paynow.sendMobile(
-      payment,
-      phoneAccount,
-      paymentOption.toLowerCase()
-    );
-    if (response.success) {
-      var paynowReference = response.pollUrl;
-      agent.add(
-        "You have successfully paid $" +
-          amount.amount +
-          ". Your invoice number is " +
-          invoiceNumber +
-          ". The paynow reference is " +
-          paynowReference
-      );
-      //save the id
-      var id = uuid();
+    // payment.add("Rates", parseFloat(amount.amount));
 
-      // save to db
-      return db
-        .collection("Rates")
-        .add({
-          id: id,
-          invoiceNumber: invoiceNumber,
-          accountNumber: accountNumber,
-          phone: phone,
-          phoneAccount: phoneAccount,
-          paymentOption: paymentOption,
-          amount: amount,
-          paynowReference: paynowReference,
-          email: email,
-          date: date,
-        })
-        .then((ref) => console.log("Success"));
-    } else {
-      agent.add("Whoops something went wrong!");
-      console.log(response.error);
-    }
+    paynow
+      .sendMobile(payment, phoneAccount, paymentOption)
+      .then(function (response) {
+        if (response.success) {
+          // These are the instructions to show the user.
+          // Instruction for how the user can make a payment
+          let instructions = response.instructions;
+
+          console.log(instructions);
+          // pollUrl for the transaction
+          let pollUrl = response.pollUrl;
+
+          agent.add(
+            "You have successfully paid $" +
+              amount.amount +
+              ". Your invoice number is " +
+              invoiceNumber +
+              ". The paynow reference is " +
+              pollUrl
+          );
+          //save
+          return db
+            .collection("Rates")
+            .add({
+              id: id,
+              invoiceNumber: invoiceNumber,
+              accountNumber: accountNumber,
+              phone: phone,
+              phoneAccount: phoneAccount,
+              paymentOption: paymentOption,
+              amount: amount,
+              paynowReference: pollUrl,
+              email: email,
+              date: date,
+            })
+            .then(
+              (ref) => console.log("Success"),
+              agent.add("Payment successful")
+            );
+        } else {
+          agent.add("Whoops something went wrong!");
+          console.log(response.error);
+        }
+      })
+      .catch((ex) => {
+        console.log("Something didn't go quite right", ex);
+      });
   }
 
   // let's setup intentMaps
