@@ -269,23 +269,6 @@ app.post("/conversations", express.json(), (request, response) => {
   }
 
   function getPaymentsAmount(agent) {
-    // const invoiceNumber = generateInvoiceNumber();
-    const accountNumber = agent.context.get("payment-followup").parameters
-      .accountNumber;
-    const phone = agent.context.get("paymentphone").parameters["phone-number"];
-    const phoneAccount = agent.context.get("getpaymentsaccount-followup")
-      .parameters.phoneAccount;
-    const paymentOption = agent.context.get("getpaymentsoption-followup")
-      .parameters.paymentOption;
-    const amount = agent.context.get("getpaymentsamount-followup").parameters
-      .amount;
-    const email = agent.context.get("getpaymentsemail-followup").parameters
-      .email;
-
-    console.log(
-      `House Account #: ${accountNumber} \nPhone: ${phone} \nPayment Account: ${phoneAccount} \nPayment Option: ${paymentOption} \nAmount $ ${amount} \nEmail: ${email}`
-    );
-
     agent.add("Amount to be paid in ZWL e.g 500.90");
   }
 
@@ -309,6 +292,11 @@ app.post("/conversations", express.json(), (request, response) => {
     //save the id
     const id = uuid();
     const date = new Date();
+
+    // Testing
+    console.log(
+      `Invoice Number: ${invoiceNumber} \nHouse Account #: ${accountNumber} \nPhone: ${phone} \nPayment Account: ${phoneAccount} \nPayment Option: ${paymentOption} \nAmount $ ${amount.amount} \nEmail: ${email}`
+    );
 
     // var paynow_id = process.env.INTEGRATION_ID;
     // var paynow_key = process.env.INTEGRATION_KEY;
