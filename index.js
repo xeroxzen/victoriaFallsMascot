@@ -356,7 +356,12 @@ app.post("/conversations", express.json(), (request, response) => {
             .then(
               (ref) => console.log("Transaction successful"),
               agent.add(
-                `You have successfully paid $${amount.amount}. Your invoice number is ${invoiceNumber}. The paynow reference is ${paynowReference}`
+                "You have successfully paid" +
+                  amount.amount +
+                  ". Your invoice number is " +
+                  invoiceNumber +
+                  ". The paynow reference is " +
+                  paynowReference
               )
             );
         } else {
