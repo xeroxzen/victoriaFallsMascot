@@ -327,7 +327,7 @@ app.post("/conversations", express.json(), (request, response) => {
 
           console.log(instructions);
           // pollUrl for the transaction
-          let pollUrl = response.pollUrl;
+          let paynowReference = response.pollUrl;
 
           agent.add(
             "You have successfully paid $" +
@@ -335,7 +335,7 @@ app.post("/conversations", express.json(), (request, response) => {
               ". Your invoice number is " +
               invoiceNumber +
               ". The paynow reference is " +
-              pollUrl
+              paynowReference
           );
           //save
           return db
@@ -348,7 +348,7 @@ app.post("/conversations", express.json(), (request, response) => {
               phoneAccount: phoneAccount,
               paymentOption: paymentOption,
               amount: amount,
-              paynowReference: pollUrl,
+              paynowReference: paynowReference,
               email: email,
               date: date,
             })
