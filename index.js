@@ -212,7 +212,6 @@ app.post("/conversations", express.json(), (request, response) => {
     //get date
     const date = new Date();
     const dateString = formatDate(date);
-    var lastNumber = 0;
 
     //var newNumber = (lastNumber + 1).toString();
     var newNumber = (Math.floor(Math.random() * 1000) + 1).toString();
@@ -253,8 +252,12 @@ app.post("/conversations", express.json(), (request, response) => {
   }
 
   function getPaymentsAccount(agent) {
+    const phoneAccount = agent.context.get("getpaymentsaccount-followup")
+      .parameters.phoneAccount;
+
     agent.add("May we have your mobile money number eg 07XXXXXXXX");
-    agent.end("");
+
+    return phoneAccount;
   }
 
   function getPaymentsOption(agent) {
@@ -318,8 +321,8 @@ app.post("/conversations", express.json(), (request, response) => {
     // create a new payment
     let payment = paynow.createPayment(invoiceNumber, email);
 
-    let predefinedAccount = "0771111111";
-    let predefinedPaymentOption = "ecocash";
+    let account = accountNumber || "0771111111";
+    let option = paymentOption || "ecocash";
 
     payment.add("Rates", parseFloat(amount.amount));
 
@@ -348,9 +351,9 @@ app.post("/conversations", express.json(), (request, response) => {
             .add({
               id: id,
               invoiceNumber: invoiceNumber,
-              accountNumber: accountNumber,
+              accountNumber: account,
               phone: phone,
-              phoneAccount: phoneAccount,
+              phoneAccount: account,
               paymentOption: paymentOption,
               amount: amount,
               paynowReference: paynowReference,
