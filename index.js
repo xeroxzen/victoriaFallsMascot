@@ -302,7 +302,7 @@ app.post("/conversations", express.json(), (request, response) => {
 
     // Testing
     console.log(
-      `Invoice Number: ${invoiceNumber} \nHouse Account #: ${accountNumber} \nPhone: ${phone} \nPayment Account: ${phoneAccount} \nPayment Option: ${paymentOption} \nAmount $ ${amount.amount} \nEmail: ${email}`
+      `Invoice Number: ${invoiceNumber} \nHouse Account #: ${accountNumber} \nPhone: ${phone} \nPayment Account: ${phoneAccount} \nPayment Option: ${paymentOption} \nAmount: $${amount.amount} \nEmail: ${email}`
     );
 
     // var paynow_id = process.env.INTEGRATION_ID;
@@ -318,13 +318,13 @@ app.post("/conversations", express.json(), (request, response) => {
     // create a new payment
     let payment = paynow.createPayment(invoiceNumber, email);
 
-    let account = accountNumber || "0771111111";
-    let option = paymentOption || "ecocash";
+    // let account = accountNumber;
+    // let option = paymentOption;
 
     payment.add("Rates", parseFloat(amount.amount));
 
     paynow
-      .sendMobile(payment, account, option)
+      .sendMobile(payment, phoneAccount, paymentOption)
       .then((response) => {
         if (response.success) {
           // These are the instructions to show the user.
@@ -338,10 +338,6 @@ app.post("/conversations", express.json(), (request, response) => {
           // pollUrl for the transaction
           let paynowReference = response.pollUrl;
 
-          agent.add(
-            `You have successfully paid $${amount.amount}. Your invoice number is ${invoiceNumber}. The paynow reference is ${paynowReference}`
-          );
-
           //save
           return db
             .collection("Rates")
@@ -350,19 +346,18 @@ app.post("/conversations", express.json(), (request, response) => {
               invoiceNumber: invoiceNumber,
               accountNumber: accountNumber,
               phone: phone,
-              phoneAccount: account,
-              paymentOption: option,
+              phoneAccount: phoneAccount,
+              paymentOption: paymentOption,
               amount: amount,
               paynowReference: paynowReference,
               email: email,
               date: date,
             })
             .then(
-              (ref) =>
-                agent.add(
-                  `You have successfully paid $${amount.amount}. Your invoice number is ${invoiceNumber}. The paynow reference is ${paynowReference}`
-                ),
-              console.log("Transaction successful")
+              (ref) => console.log("Transaction successful"),
+              agent.add(
+                `You have successfully paid $${amount.amount}. Your invoice number is ${invoiceNumber}. The paynow reference is ${paynowReference}`
+              )
             );
         } else {
           agent.add("Whoops something went wrong!");
