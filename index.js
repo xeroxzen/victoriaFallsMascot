@@ -354,7 +354,7 @@ app.post("/conversations", express.json(), (request, response) => {
             })
             .then(
               (ref) => console.log("Success"),
-              agent.add("Payment successful")
+              agent.add("Payment was successful")
             );
         } else {
           agent.add("Whoops something went wrong!");
