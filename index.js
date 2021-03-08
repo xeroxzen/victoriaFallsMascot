@@ -295,7 +295,7 @@ app.post("/conversations", express.json(), (request, response) => {
     let payment = paynow.createPayment(invoiceNumber, email);
     payment.add("Rates", parseFloat(amount.amount));
 
-    response = await paynow.sendMobile(
+    var response = await paynow.sendMobile(
       payment,
       phoneAccount,
       paymentOption.toLowerCase()
