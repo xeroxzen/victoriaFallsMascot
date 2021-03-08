@@ -308,15 +308,6 @@ app.post("/conversations", express.json(), (request, response) => {
 
     payment.add("Rates", parseFloat(amount.amount));
 
-    // Status of the transaction
-    let status = paynow.pollTransaction(pollUrl);
-    if (status.paid()) {
-      //Transaction was successful
-      console.log("Transaction was successful");
-    } else {
-      console.log("Not successful");
-    }
-
     paynow
       .sendMobile(payment, phoneAccount, paymentOption)
       .then(function (response) {
