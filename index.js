@@ -271,6 +271,7 @@ app.post("/conversations", express.json(), (request, response) => {
     agent.add(new Suggestion("ecocash"));
     agent.add(new Suggestion("onemoney"));
     agent.add(new Suggestion("telecash"));
+    agent.end("");
   }
 
   function getPaymentsAmount(agent) {
@@ -317,10 +318,13 @@ app.post("/conversations", express.json(), (request, response) => {
     // create a new payment
     let payment = paynow.createPayment(invoiceNumber, email);
 
+    let predefinedAccount = "0771111111";
+    let predefinedPaymentOption = "ecocash";
+
     payment.add("Rates", parseFloat(amount.amount));
 
     paynow
-      .sendMobile(payment, phoneAccount, paymentOption.toLowerCase())
+      .sendMobile(payment, predefinedAccount, predefinedPaymentOption)
       .then((response) => {
         if (response.success) {
           // These are the instructions to show the user.
