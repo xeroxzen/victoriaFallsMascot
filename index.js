@@ -293,8 +293,8 @@ app.post("/conversations", express.json(), (request, response) => {
     const id = uuid();
     const date = new Date();
 
-    var paynow_id = process.env.INTEGRATION_ID;
-    var paynow_key = process.env.INTEGRATION_KEY;
+    // var paynow_id = process.env.INTEGRATION_ID;
+    // var paynow_key = process.env.INTEGRATION_KEY;
 
     let paynow = new Paynow("11734", "0586e460-df4b-409b-948b-940c0fd485fb");
 
@@ -309,7 +309,7 @@ app.post("/conversations", express.json(), (request, response) => {
     payment.add("Rates", parseFloat(amount.amount));
 
     paynow
-      .sendMobile(payment, phoneAccount, paymentOption)
+      .sendMobile(payment, "0771111111", "ecocash")
       .then((response) => {
         if (response.success) {
           // These are the instructions to show the user.
