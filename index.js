@@ -252,12 +252,15 @@ app.post("/conversations", express.json(), (request, response) => {
   }
 
   function getPaymentsAccount(agent) {
-    const phoneAccount = agent.context.get("getpaymentsaccount-followup")
-      .parameters.phoneAccount;
-
     agent.add("May we have your mobile money number eg 07XXXXXXXX");
 
-    return phoneAccount;
+    // return phoneAccount;
+  }
+
+  function payPhone() {
+    let phone = getPaymentsAccount(agent);
+
+    return phone;
   }
 
   function getPaymentsOption(agent) {
@@ -290,8 +293,7 @@ app.post("/conversations", express.json(), (request, response) => {
     const accountNumber = agent.context.get("payment-followup").parameters
       .accountNumber;
     const phone = agent.context.get("paymentphone").parameters["phone-number"];
-    const phoneAccount = agent.context.get("getpaymentsaccount-followup")
-      .parameters.phoneAccount;
+    const phoneAccount = payPhone();
     const paymentOption = agent.context.get("getpaymentsoption-followup")
       .parameters.paymentOption;
     const amount = agent.context.get("getpaymentsamount-followup").parameters
