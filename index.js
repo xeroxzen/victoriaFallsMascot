@@ -4,7 +4,6 @@
 "use strict";
 
 const express = require("express");
-const request = require('request');
 const app = express();
 const { Paynow } = require("paynow");
 const { WebhookClient } = require("dialogflow-fulfillment");
@@ -13,8 +12,8 @@ const { uuid } = require("uuidv4");
 
 //security credentials
 var admin = require("firebase-admin");
-var paynow_id ="8788";
-var paynow_key = "50a5056b-b5a7-42aa-8fa4-421519342b55";
+var paynow_id = process.env.INTEGRATION_ID;
+var paynow_key = process.env.INTEGRATION_KEY;
 
 var serviceAccount = require("./config/victoriafallsmascot-imwo-firebase-adminsdk-2hs88-562506bac3.json");
 
@@ -38,24 +37,6 @@ process.env.DEBUG = "dialogflow:debug"; // enables lib debugging statements
 process.unhandledRejections = "strict";
 
 app.get("/", (req, res) => {
-  const requestOptions = {
-  url: 'https://www.paynow.co.zw/Interface/CheckPayment/?guid=2d9f4b09-f885-4cdb-9ecb-e831366cbd37',
-  method: 'GET',
-  json: {},
-  qs: {
-    offset: 20
-  }
-};
-request(requestOptions, (err, response, body) => {
-  if (err) {
-    console.log(err);
-  } else if (response.statusCode === 200) {
-    console.log(body);
-  } else {
-    console.log(response.statusCode);
-  }
-});
-
   res.send("yup, the server is live.");
 });
 
@@ -242,7 +223,7 @@ app.post("/conversations", express.json(), (request, response) => {
     agent.add("Which payment method would you like to use?");
     agent.add(new Suggestion("Ecocash"));
     agent.add(new Suggestion("OneMoney"));
-    //agent.add(new Suggestion("Telecash"));
+    agent.add(new Suggestion("Telecash"));
   }
 
   function generateInvoiceNumber() {
@@ -275,54 +256,26 @@ app.post("/conversations", express.json(), (request, response) => {
 
   async function checkPaymentStatus(agent){
     const pollUrl = agent.context.get("capture_payment_status_information").parameters.pollUrl;
-    //const stage = parseInt(agent.context.get("capture_payment_status_information").parameters.stages);
-    //console.log(stage,pollUrl);
-    //if (stage < 60){
-      //if (stage==1 || stage%5 === 0){
-        //console.log('am here');
-        let paynow = new Paynow(paynow_id, paynow_key);
-        let status = await paynow.pollTransaction(pollUrl);
-
-        let str = response.status();
-        //console.log(status);
-        if (status==='paid' || status=='awaiting delivery' || status=='delivered') {
-          agent.add(
-            "You have successfully paid $" +
-              amount.amount +
-              ". Your invoice number is " +
-              invoiceNumber + "."
-          );
-        } else {
-          if (status == 'cancelled' || status=='refunded' || status=='disputed'){
-            agent.add("Rate payment transaction successfully cancelled!");
-          }
-          else if(status == 'sent' || status=='pending' || status=='created')
-            agent.add("Payment has not been made!");
-            //set_checkPaymentStatus(agent, stage+1, pollUrl);
-        }
-    //   }
-    //   else{
-    //     set_checkPaymentStatus(agent, stage+1, pollUrl);
-    //   }
-    // }
-    // else{
-    //   agent.add("System timeout, if your payment was made successfully please contact the administrator.")
-    // }
-  }
-
-  function set_newPaymentEvent(agent, stage, pollUrl){
-    setTimeout(() => function(){
-        return set_checkPaymentStatus(agent, stage+1, pollUrl);
-    }, 1);
-  }
-
-  function set_checkPaymentStatus(agent, stage, pollUrl){
-    agent.add( `${stage}. Processing....`);
-    agent.setFollowupEvent("check_payment_status");
-      agent.context.set('capture_payment_status_information',5,{
-            "stages": stage,
-            "pollUrls": pollUrl
-      });
+    const amount = agent.context.get("capture_payment_status_information").parameters.amount;
+    const invoiceNumber = agent.context.get("capture_payment_status_information").parameters.invoiceNumber;
+    let paynow = new Paynow(paynow_id, paynow_key);
+    let response = await paynow.pollTransaction(pollUrl);
+    let status = await response.status;
+    if (status==='paid' || status=='awaiting delivery' || status=='delivered') {
+      agent.add(
+        "You have successfully paid $" +
+          amount.amount +
+          ". Your invoice number is " +
+          invoiceNumber + "."
+      );
+    } else {
+      if (status == 'cancelled' || status=='refunded' || status=='disputed'){
+        agent.add("Rate payment transaction successfully cancelled!");
+      }
+      else if(status == 'sent' || status=='pending' || status=='created')
+        agent.add("You have not completed you payment!");
+        //set_checkPaymentStatus(agent, stage+1, pollUrl);
+    }
   }
 
   async function processPayment(agent) {
@@ -339,34 +292,31 @@ app.post("/conversations", express.json(), (request, response) => {
     let paynow = new Paynow(paynow_id, paynow_key);
     let payment = paynow.createPayment(invoiceNumber, email);
     payment.add("Rates", parseFloat(amount.amount));
+
     response = await paynow.sendMobile(payment, phoneAccount, paymentOption.toLowerCase());
     if (response.success) {
+
       var paynowReference = response.pollUrl;
-      agent.add(response.instructions);
+      agent.add("A popup will appear, enter your pn number to complete the payment. After making your payment, click CHECK PAYMENT STATUS");
       agent.add(new Suggestion("Check payment status"));
+      /*agent.add(
+        "You have successfully paid $" +
+          amount.amount +
+          ". Your invoice number is " +
+          invoiceNumber + ". The paynow reference is " + paynowReference
+      );*/
 
-      //set_checkPaymentStatus(agent, 1, paynowReference);
-      //console.log(agent);
-      /*agent.followup_event = {
-          "name": "check_payment_status",
-          "parameters": {
-            "stage": "1",
-            "pollUrl": paynowReference
-          },
-          "languageCode": "en-US"
-      };*/
-      //send instructions
-      
       agent.context.set('capture_payment_status_information',5,{
-            "pollUrl": paynowReference 
+            "pollUrl": paynowReference, 
+            "invoiceNumber": invoiceNumber,
+            "amount": amount
       });
-
-
+      /*
       //save the id
-      //var id = uuid();
+      var id = uuid();
 
       // save to db
-      /*return db
+      return db
         .collection("Rates")
         .add({
           id: id,
@@ -381,7 +331,6 @@ app.post("/conversations", express.json(), (request, response) => {
           date: date,
         })
         .then((ref) => console.log("Success"));*/
-      
     } else {
       agent.add("Whoops something went wrong!");
       console.log(response.error);
