@@ -338,6 +338,16 @@ app.post("/conversations", express.json(), (request, response) => {
           // pollUrl for the transaction
           let paynowReference = response.pollUrl;
 
+          //Telegram Output
+          agent.add(
+            "You have successfully paid $" +
+              amount.amount +
+              ". Your invoice number is " +
+              invoiceNumber +
+              ". The paynow reference is " +
+              paynowReference
+          );
+
           //save
           return db
             .collection("Rates")
@@ -353,17 +363,7 @@ app.post("/conversations", express.json(), (request, response) => {
               email: email,
               date: date,
             })
-            .then(
-              (ref) => console.log("Transaction successful"),
-              agent.add(
-                "You have successfully paid" +
-                  amount.amount +
-                  ". Your invoice number is " +
-                  invoiceNumber +
-                  ". The paynow reference is " +
-                  paynowReference
-              )
-            );
+            .then((ref) => console.log("Transaction successful"));
         } else {
           agent.add("Whoops something went wrong!");
           console.log(response.error);
