@@ -13,6 +13,8 @@ require("dotenv").config();
 
 //security credentials
 var admin = require("firebase-admin");
+var paynow_id = process.env.INTEGRATION_ID;
+var paynow_key = process.env.INTEGRATION_KEY;
 
 var serviceAccount = require("./config/victoriafallsmascot-imwo-firebase-adminsdk-2hs88-562506bac3.json");
 
@@ -281,7 +283,36 @@ app.post("/conversations", express.json(), (request, response) => {
 
   // --unhandled-rejections=strict
 
-  function processPayment(agent) {
+// <<<<<<< paymentsHack
+//     str = y + m + d;
+//     return str;
+//   }
+
+  async function checkPaymentStatus(agent){
+    const pollUrl = agent.context.get("capture_payment_status_information").parameters.pollUrl;
+    const amount = agent.context.get("capture_payment_status_information").parameters.amount;
+    const invoiceNumber = agent.context.get("capture_payment_status_information").parameters.invoiceNumber;
+    let paynow = new Paynow(paynow_id, paynow_key);
+    let response = await paynow.pollTransaction(pollUrl);
+    let status = await response.status;
+    if (status==='paid' || status=='awaiting delivery' || status=='delivered') {
+      agent.add(
+        "You have successfully paid $" +
+          amount.amount +
+          ". Your invoice number is " +
+          invoiceNumber + "."
+      );
+    } else {
+      if (status == 'cancelled' || status=='refunded' || status=='disputed'){
+        agent.add("Rate payment transaction successfully cancelled!");
+      }
+      else if(status == 'sent' || status=='pending' || status=='created')
+        agent.add("You have not completed you payment!");
+        //set_checkPaymentStatus(agent, stage+1, pollUrl);
+    }
+  }
+
+  async function processPayment(agent) {
     //generate a new invoice number
     const invoiceNumber = generateInvoiceNumber();
     const accountNumber = agent.context.get("payment-followup").parameters
@@ -300,15 +331,13 @@ app.post("/conversations", express.json(), (request, response) => {
     const id = uuid();
     const date = new Date();
 
+    let paynow = new Paynow(paynow_id, paynow_key);
     // Testing
     console.log(
       `Invoice Number: ${invoiceNumber} \nHouse Account #: ${accountNumber} \nPhone: ${phone} \nPayment Account: ${phoneAccount} \nPayment Option: ${paymentOption} \nAmount: $${amount.amount} \nEmail: ${email}`
     );
 
-    // var paynow_id = process.env.INTEGRATION_ID;
-    // var paynow_key = process.env.INTEGRATION_KEY;
-
-    let paynow = new Paynow("11734", "0586e460-df4b-409b-948b-940c0fd485fb");
+//     let paynow = new Paynow("11734", "0586e460-df4b-409b-948b-940c0fd485fb");
 
     //Set return and return urls
     paynow.resultUrl = "http://example.com/gateways/paynow/update";
@@ -323,6 +352,49 @@ app.post("/conversations", express.json(), (request, response) => {
 
     payment.add("Rates", parseFloat(amount.amount));
 
+    response = await paynow.sendMobile(payment, phoneAccount, paymentOption.toLowerCase());
+    if (response.success) {
+
+      var paynowReference = response.pollUrl;
+      agent.add("A popup will appear, enter your pn number to complete the payment. After making your payment, click CHECK PAYMENT STATUS");
+      agent.add(new Suggestion("Check payment status"));
+      /*agent.add(
+        "You have successfully paid $" +
+          amount.amount +
+          ". Your invoice number is " +
+          invoiceNumber + ". The paynow reference is " + paynowReference
+      );*/
+
+      agent.context.set('capture_payment_status_information',5,{
+            "pollUrl": paynowReference, 
+            "invoiceNumber": invoiceNumber,
+            "amount": amount
+      });
+      /*
+      //save the id
+      var id = uuid();
+
+      // save to db
+      return db
+        .collection("Rates")
+        .add({
+          id: id,
+          invoiceNumber: invoiceNumber,
+          accountNumber: accountNumber,
+          phone: phone,
+          phoneAccount: phoneAccount,
+          paymentOption: paymentOption,
+          amount: amount,
+          paynowReference: paynowReference,
+          email: email,
+          date: date,
+        })
+        .then((ref) => console.log("Success"));*/
+    } else {
+      agent.add("Whoops something went wrong!");
+      console.log(response.error);
+    }
+// =======
     paynow
       .sendMobile(payment, phoneAccount, paymentOption)
       .then((response) => {
@@ -372,6 +444,7 @@ app.post("/conversations", express.json(), (request, response) => {
       .catch((ex) => {
         console.log("Something didn't go quite right", ex);
       });
+// >>>>>>> main
   }
 
   // let's setup intentMaps
@@ -399,6 +472,7 @@ app.post("/conversations", express.json(), (request, response) => {
   intentMap.set("getPaymentsOption", getPaymentsOption);
   // intentMap.set("getPaymentsConfirmation", getPaymentsConfirmation);
   intentMap.set("processPayment", processPayment);
+  intentMap.set("checkPaymentStatus", checkPaymentStatus);
 
   // intentmap request handling
   agent.handleRequest(intentMap);

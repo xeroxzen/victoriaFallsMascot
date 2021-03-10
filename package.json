@@ -26,6 +26,7 @@
     "firebase-admin": "^9.4.2",
     "firebase-functions": "^3.13.1",
     "paynow": "^1.0.9",
+    "request": "^2.88.2",
     "uuidv4": "^6.2.6"
   }
 }
