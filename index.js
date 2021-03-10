@@ -9,6 +9,7 @@ const { Paynow } = require("paynow");
 const { WebhookClient } = require("dialogflow-fulfillment");
 const { Card, Suggestion } = require("dialogflow-fulfillment");
 const { uuid } = require("uuidv4");
+require("dotenv").config();
 
 //security credentials
 var admin = require("firebase-admin");
@@ -147,10 +148,20 @@ app.post("/conversations", express.json(), (request, response) => {
 
   function saveToDB(agent) {
     // Simpler format
-    const age = agent.parameters["ageGroups"];
-    const gender = agent.parameters["gender"];
-    const symptoms = agent.parameters["symptoms"];
-    const phone = agent.parameters["phone"];
+    // const age = agent.parameters["ageGroups"];
+    // const gender = agent.parameters["gender"];
+    // const symptoms = agent.parameters["symptoms"];
+    // const phone = agent.parameters["phone"];
+
+    // the older way
+    const ageGrp = agent.context.get("coronavirusGender-followup").parameters
+      .ageGroups;
+    const sex = agent.context.get("coronavirusSymptoms-followup").parameters
+      .gender;
+    const symptom = agent.context.get("coronavirusPhone-followup").parameters
+      .symptoms;
+    const cellNumber = agent.context.get("confirmDetails-followup").parameters
+      .phone;
 
     //get the id
     const id = uuid();
@@ -158,8 +169,12 @@ app.post("/conversations", express.json(), (request, response) => {
     const time = new Date();
 
     //testing
+    // console.log(
+    //   `Age: ${age} \nSex: ${gender} Phone: ${phone} \nSymptom: ${symptoms} \nTime: ${time}`
+    // );
+
     console.log(
-      `Age: ${age} \nSex: ${gender} \nSymptom: ${symptoms} \nTime: ${time}`
+      `Age: ${ageGrp} \nSex: ${sex} \nPhone: ${cellNumber} \nSymptom: ${symptom} \nTime: ${time}`
     );
 
     // save to db
@@ -167,11 +182,16 @@ app.post("/conversations", express.json(), (request, response) => {
       .collection("userDiagnosis")
       .add({
         id: id,
-        age: age,
-        gender: gender,
-        symptoms: symptoms,
-        phone: phone,
-        time: time,
+        // age: age,
+        // gender: gender,
+        // symptoms: symptoms,
+        // phone: phone,
+        // time: time,
+        // old formatDate
+        ageGrp: ageGrp,
+        sex: sex,
+        symptom: symptom,
+        cellNumber: cellNumber,
       })
       .then(
         (ref) =>
@@ -182,56 +202,18 @@ app.post("/conversations", express.json(), (request, response) => {
           "Thank you for your cooperation. \n\nIn the meantime we advise you to remain at home in self-isolation. Our Rapid Response Team will contact you shortly"
         ),
         agent.add(new Suggestion(`Hello again`)),
-        agent.add(new Suggestion(`Bye for now`))
+        agent.add(new Suggestion(`Bye for now`)),
+        agent.end("")
       );
   }
 
   //Payments
-
-  function getPaymentsAccountNumber(agent) {
-    agent.add(
-      "Welcome to the payments portal. \n\nTo proceed with your rates payment, may we have your House Account Number \n\nFormat: 32003000"
-    );
-  }
-
-  function getPaymentsPhone(agent) {
-    agent.add("May we have your phone number? \n\nFormat +263779545334");
-  }
-
-  function getPaymentsEmail(agent) {
-    agent.add("May we have your email address?");
-  }
-
-  function getPaymentsAccount(agent) {
-    agent.add("May we have your mobile money number eg 07XXXXXXXX");
-  }
-
-  function getPaymentsAmount(agent) {
-    agent.add("Amount to be paid in ZWL e.g 500.90");
-  }
-
-  function getPaymentsOption(agent){
-    /*
-    agent.context.set({
-      'name':'backend-captured-email',
-      'lifespan': 5,
-      'parameters':{
-        'email':agent.query
-        }
-    });
-    */
-    agent.add("Which payment method would you like to use?");
-    agent.add(new Suggestion("Ecocash"));
-    agent.add(new Suggestion("OneMoney"));
-    agent.add(new Suggestion("Telecash"));
-  }
 
   function generateInvoiceNumber() {
     //invoice number format INV-yymmdd-count INV-20210218-009
     //get date
     const date = new Date();
     const dateString = formatDate(date);
-    var lastNumber = 0;
 
     //var newNumber = (lastNumber + 1).toString();
     var newNumber = (Math.floor(Math.random() * 1000) + 1).toString();
@@ -253,6 +235,58 @@ app.post("/conversations", express.json(), (request, response) => {
     str = y + m + d;
     return str;
   }
+
+  function getPaymentsAccountNumber(agent) {
+    agent.add(
+      "Welcome to the payments portal. \n\nTo proceed with your rates payment, may we have your House Account Number \n\nFormat: 32003000"
+    );
+    agent.end("");
+  }
+
+  function getPaymentsPhone(agent) {
+    agent.add("May we have your phone number? \n\nFormat 0779545334");
+    agent.end("");
+  }
+
+  function getPaymentsEmail(agent) {
+    agent.add("May we have your email address? \n\nExample: vfm@example.com");
+    agent.end("");
+  }
+
+  function getPaymentsAccount(agent) {
+    agent.add("May we have your mobile money number eg 07XXXXXXXX");
+
+    // return phoneAccount;
+  }
+
+  function getPaymentsOption(agent) {
+    /*
+    agent.context.set({
+      'name':'backend-captured-email',
+      'lifespan': 5,
+      'parameters':{
+        'email':agent.query
+        }
+    });
+    */
+    agent.add("Which payment method would you like to use?");
+    agent.add(new Suggestion("ecocash"));
+    agent.add(new Suggestion("onemoney"));
+    agent.add(new Suggestion("telecash"));
+    agent.end("");
+  }
+
+  function getPaymentsAmount(agent) {
+    agent.add("Amount to be paid in ZWL e.g 500.90");
+    agent.end("");
+  }
+
+  // --unhandled-rejections=strict
+
+// <<<<<<< paymentsHack
+//     str = y + m + d;
+//     return str;
+//   }
 
   async function checkPaymentStatus(agent){
     const pollUrl = agent.context.get("capture_payment_status_information").parameters.pollUrl;
@@ -281,16 +315,41 @@ app.post("/conversations", express.json(), (request, response) => {
   async function processPayment(agent) {
     //generate a new invoice number
     const invoiceNumber = generateInvoiceNumber();
-    const accountNumber = agent.context.get("payment-followup").parameters.accountNumber;
-    const phone = agent.context.get("paymentphone").parameters['phone-number'];
-    const phoneAccount = agent.context.get("getpaymentsaccount-followup").parameters.phoneAccount;
-    const paymentOption = agent.context.get("getpaymentsoption-followup").parameters.paymentOption;
-    const amount = agent.context.get("getpaymentsamount-followup").parameters.amount;
-    const email = agent.context.get("getpaymentsemail-followup").parameters.email;
+    const accountNumber = agent.context.get("payment-followup").parameters
+      .accountNumber;
+    const phone = agent.context.get("paymentphone").parameters["phone-number"];
+    const phoneAccount = agent.context.get("getpaymentsaccount-followup")
+      .parameters.phoneAccount;
+    const paymentOption = agent.context.get("getpaymentsoption-followup")
+      .parameters.paymentOption;
+    const amount = agent.context.get("getpaymentsamount-followup").parameters
+      .amount;
+    const email = agent.context.get("getpaymentsemail-followup").parameters
+      .email;
+
+    //save the id
+    const id = uuid();
     const date = new Date();
 
     let paynow = new Paynow(paynow_id, paynow_key);
+    // Testing
+    console.log(
+      `Invoice Number: ${invoiceNumber} \nHouse Account #: ${accountNumber} \nPhone: ${phone} \nPayment Account: ${phoneAccount} \nPayment Option: ${paymentOption} \nAmount: $${amount.amount} \nEmail: ${email}`
+    );
+
+//     let paynow = new Paynow("11734", "0586e460-df4b-409b-948b-940c0fd485fb");
+
+    //Set return and return urls
+    paynow.resultUrl = "http://example.com/gateways/paynow/update";
+    paynow.returnUrl =
+      "http://example.com/return?gateway=paynow&merchantReference=1234";
+
+    // create a new payment
     let payment = paynow.createPayment(invoiceNumber, email);
+
+    // let account = accountNumber;
+    // let option = paymentOption;
+
     payment.add("Rates", parseFloat(amount.amount));
 
     response = await paynow.sendMobile(payment, phoneAccount, paymentOption.toLowerCase());
@@ -335,6 +394,57 @@ app.post("/conversations", express.json(), (request, response) => {
       agent.add("Whoops something went wrong!");
       console.log(response.error);
     }
+// =======
+    paynow
+      .sendMobile(payment, phoneAccount, paymentOption)
+      .then((response) => {
+        if (response.success) {
+          // These are the instructions to show the user.
+          // Instruction for how the user can make a payment
+          // Get the link to redirect the user to, then use it as you see fit
+          let link = response.redirectUrl;
+
+          let instructions = response.instructions;
+
+          console.log(instructions);
+          // pollUrl for the transaction
+          let paynowReference = response.pollUrl;
+
+          //Telegram Output
+          agent.add(
+            "You have successfully paid $" +
+              amount.amount +
+              ". Your invoice number is " +
+              invoiceNumber +
+              ". The paynow reference is " +
+              paynowReference
+          );
+
+          //save
+          return db
+            .collection("Rates")
+            .add({
+              id: id,
+              invoiceNumber: invoiceNumber,
+              accountNumber: accountNumber,
+              phone: phone,
+              phoneAccount: phoneAccount,
+              paymentOption: paymentOption,
+              amount: amount,
+              paynowReference: paynowReference,
+              email: email,
+              date: date,
+            })
+            .then((ref) => console.log("Transaction successful"));
+        } else {
+          agent.add("Whoops something went wrong!");
+          console.log(response.error);
+        }
+      })
+      .catch((ex) => {
+        console.log("Something didn't go quite right", ex);
+      });
+// >>>>>>> main
   }
 
   // let's setup intentMaps
