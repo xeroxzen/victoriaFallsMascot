@@ -230,21 +230,21 @@ app.post("/conversations", express.json(), (request, response) => {
 
   function centralAdministration(agent) {
     agent.add(
-      "Central Administration FAQs \n\nWhat exactly are you responsible for?"
+      "Central Administration FAQs \n\n1. What exactly are you responsible for?"
     );
     agent.end("");
   }
 
   function healthHousingAndCommunityService(agent) {
     agent.add(
-      "Health Housing & Community Service FAQs \n\nWhen can we expect to get our Medical AID insurance covered?"
+      "Health Housing & Community Service FAQs \n\n1. When can we expect to get our Medical AID insurance covered?"
     );
     agent.end("");
   }
 
   function treasury(agent) {
     agent.add(
-      "Treasury Frequently Asked Questions \n\nWhat's the city council's budget for this year?"
+      "Treasury Frequently Asked Questions \n\n1. What's the city council's budget for this year?"
     );
     agent.end("");
   }
