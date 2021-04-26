@@ -208,6 +208,41 @@ app.post("/conversations", express.json(), (request, response) => {
       );
   }
 
+  //FAQs
+  function frequentlyAskedQuestions(agent) {
+    agent.add(
+      "Welcome to the FAQ section. The Victoria Falls City Council has 4 departments and you can read through the FAQs as per department. \n\nDepartments 1. Engineering \n2. Central Administration \n3. Health Housing & Community Service \n4. Treasury"
+    );
+
+    agent.add(new Suggestion("Dept 1"));
+    agent.add(new Suggestion("Dept 2"));
+    agent.add(new Suggestion("Dept 3"));
+    agent.add(new Suggestion("Dept 4"));
+    agent.end("");
+  }
+
+  function engineering(agent) {
+    agent.add("FAQs \n\n1. What is Engineering?");
+    agent.end("");
+  }
+
+  function centralAdministration(agent) {
+    agent.add("What exactly are you responsible for?");
+    agent.end("");
+  }
+
+  function healthHousingAndCommunityService(agent) {
+    agent.add("When can we expect to get our Medical AID insurance covered?");
+    agent.end("");
+  }
+
+  function treasury(agent) {
+    agent.add("What's the city council's budget for this year?");
+    agent.end("");
+  }
+
+  // FAQs end here
+
   //Payments
 
   function generateInvoiceNumber() {
@@ -458,7 +493,6 @@ app.post("/conversations", express.json(), (request, response) => {
       .catch((ex) => {
         console.log("Something didn't go quite right", ex);
       });
-    // >>>>>>> main
   }
 
   // let's setup intentMaps
@@ -477,6 +511,17 @@ app.post("/conversations", express.json(), (request, response) => {
   intentMap.set("improveServiceDelivery - Recommendation", recommendation);
   intentMap.set("saveComplaint", saveComplaint);
   intentMap.set("saveRecommendation", saveRecommendation);
+
+  //FAQs
+  intentMap.set("frequentlyAskedQuestions", frequentlyAskedQuestions);
+  intentMap.set("engineering", engineering);
+  intentMap.set("centralAdministration", centralAdministration);
+  intentMap.set(
+    "healthHousingAndCommunityService",
+    healthHousingAndCommunityService
+  );
+  intentMap.set("treasury", treasury);
+  // FAQs end here
 
   intentMap.set("payments", getPaymentsAccountNumber);
   intentMap.set("getPaymentsPhone", getPaymentsPhone);
