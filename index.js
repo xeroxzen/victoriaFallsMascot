@@ -211,7 +211,7 @@ app.post("/conversations", express.json(), (request, response) => {
   //FAQs
   function frequentlyAskedQuestions(agent) {
     agent.add(
-      "Welcome to the FAQ section. The Victoria Falls City Council has 4 departments and you can read through the FAQs as per department. \n\nDepartments 1. Engineering \n2. Central Administration \n3. Health Housing & Community Service \n4. Treasury"
+      "Welcome to the FAQ section. The Victoria Falls City Council has 4 departments and you can read through the FAQs as per department. \n\nDepartments \n1. Engineering \n2. Central Administration \n3. Health Housing & Community Service \n4. Treasury"
     );
 
     agent.add(new Suggestion("Dept 1"));
@@ -222,22 +222,30 @@ app.post("/conversations", express.json(), (request, response) => {
   }
 
   function engineering(agent) {
-    agent.add("FAQs \n\n1. What is Engineering?");
+    agent.add(
+      "Engineering Frequently Asked Questions \n\n1. What is Engineering?"
+    );
     agent.end("");
   }
 
   function centralAdministration(agent) {
-    agent.add("What exactly are you responsible for?");
+    agent.add(
+      "Central Administration FAQs \n\nWhat exactly are you responsible for?"
+    );
     agent.end("");
   }
 
   function healthHousingAndCommunityService(agent) {
-    agent.add("When can we expect to get our Medical AID insurance covered?");
+    agent.add(
+      "Health Housing & Community Service FAQs \n\nWhen can we expect to get our Medical AID insurance covered?"
+    );
     agent.end("");
   }
 
   function treasury(agent) {
-    agent.add("What's the city council's budget for this year?");
+    agent.add(
+      "Treasury Frequently Asked Questions \n\nWhat's the city council's budget for this year?"
+    );
     agent.end("");
   }
 
