@@ -177,11 +177,10 @@ app.post("/conversations", express.json(), (request, response) => {
     console.log(
       `Age: ${ageGrp} \nSex: ${sex} \nPhone: ${cellNumber} \nSymptom: ${symptom} \nTime: ${time}`
     );
+    console.log("It works...");
 
     //output before saving
-    agent.add(
-          "Thank you"
-        ),
+    agent.add("Thank you");
 
     // save to db
     return db
