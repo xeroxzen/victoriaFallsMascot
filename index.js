@@ -126,9 +126,9 @@ app.post("/conversations", express.json(), (request, response) => {
   }
 
   function saveRecommendation(agent) {
-    var id = uuid_v4();
-    var recommendation = agent.parameters.recommendation;
-    var recommendationDate = new Date();
+    let id = uuid_v4();
+    let recommendation = agent.parameters.recommendation;
+    let recommendationDate = new Date();
 
     // save to db
     return db
@@ -147,27 +147,25 @@ app.post("/conversations", express.json(), (request, response) => {
       );
   }
 
-  function saveToDB(agent) {
+  async function saveToDB(agent) {
     // Simpler format
-    // const age = agent.parameters["ageGroups"];
-    // const gender = agent.parameters["gender"];
-    // const symptoms = agent.parameters["symptoms"];
-    // const phone = agent.parameters["phone"];
+    //get the id
+    let id = uuid_v4();
+    let time = new Date();
+    let ageGrp = agent.parameters.ageGroups;
+    let sex = agent.parameters.gender;
+    let symptom = agent.parameters.symptoms;
+    let cellNumber = agent.parameters.phone;
 
     // the older way
-    const ageGrp = agent.context.get("coronavirusGender-followup").parameters
-      .ageGroups;
-    const sex = agent.context.get("coronavirusSymptoms-followup").parameters
-      .gender;
-    const symptom = agent.context.get("coronavirusPhone-followup").parameters
-      .symptoms;
-    const cellNumber = agent.context.get("confirmDetails-followup").parameters
-      .phone;
-
-    //get the id
-    const id = uuid_v4();
-    //let's get the time
-    const time = new Date();
+    // let ageGrp = agent.context.get("coronavirusGender-followup").parameters
+    //   .ageGroups;
+    // let sex = agent.context.get("coronavirusSymptoms-followup").parameters
+    //   .gender;
+    // let symptom = agent.context.get("coronavirusPhone-followup").parameters
+    //   .symptoms;
+    // let cellNumber = agent.context.get("confirmDetails-followup").parameters
+    //   .phone;
 
     //testing
     // console.log(
@@ -178,9 +176,6 @@ app.post("/conversations", express.json(), (request, response) => {
       `Age: ${ageGrp} \nSex: ${sex} \nPhone: ${cellNumber} \nSymptom: ${symptom} \nTime: ${time}`
     );
     console.log("It works...");
-
-    //output before saving
-    agent.add("Thank you");
 
     // save to db
     return db
