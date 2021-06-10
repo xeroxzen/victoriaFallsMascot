@@ -178,17 +178,16 @@ app.post("/conversations", express.json(), (request, response) => {
       `Age: ${ageGrp} \nSex: ${sex} \nPhone: ${cellNumber} \nSymptom: ${symptom} \nTime: ${time}`
     );
 
+    //output before saving
+    agent.add(
+          "Thank you"
+        ),
+
     // save to db
     return db
       .collection("userDiagnosis")
       .add({
         id: id,
-        // age: age,
-        // gender: gender,
-        // symptoms: symptoms,
-        // phone: phone,
-        // time: time,
-        // old formatDate
         ageGrp: ageGrp,
         sex: sex,
         symptom: symptom,
