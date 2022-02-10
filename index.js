@@ -246,255 +246,255 @@ app.post("/conversations", express.json(), (request, response) => {
 
   //Payments
 
-  // function generateInvoiceNumber() {
-  //   //invoice number format INV-yymmdd-count INV-20210218-009
-  //   //get date
-  //   const date = new Date();
-  //   const dateString = formatDate(date);
+  function generateInvoiceNumber() {
+    //invoice number format INV-yymmdd-count INV-20210218-009
+    //get date
+    const date = new Date();
+    const dateString = formatDate(date);
 
-  //   //var newNumber = (lastNumber + 1).toString();
-  //   var newNumber = (Math.floor(Math.random() * 1000) + 1).toString();
-  //   newNumber.length == 1 && (newNumber = "0" + newNumber);
-  //   newNumber.length == 2 && (newNumber = "0" + newNumber);
+    //var newNumber = (lastNumber + 1).toString();
+    var newNumber = (Math.floor(Math.random() * 1000) + 1).toString();
+    newNumber.length == 1 && (newNumber = "0" + newNumber);
+    newNumber.length == 2 && (newNumber = "0" + newNumber);
 
-  //   return "INV-" + dateString + "-" + newNumber;
-  // }
+    return "INV-" + dateString + "-" + newNumber;
+  }
 
-  // function formatDate(date) {
-  //   let str = "";
-  //   var y = date.getFullYear().toString();
-  //   var m = (date.getMonth() + 1).toString();
-  //   var d = date.getDate().toString();
+  function formatDate(date) {
+    let str = "";
+    var y = date.getFullYear().toString();
+    var m = (date.getMonth() + 1).toString();
+    var d = date.getDate().toString();
 
-  //   d.length == 1 && (d = "0" + d);
-  //   m.length == 1 && (m = "0" + m);
+    d.length == 1 && (d = "0" + d);
+    m.length == 1 && (m = "0" + m);
 
-  //   str = y + m + d;
-  //   return str;
-  // }
+    str = y + m + d;
+    return str;
+  }
 
-  // function getPaymentsAccountNumber(agent) {
-  //   agent.add(
-  //     "Welcome to the payments portal. \n\nTo proceed with your rates payment, may we have your House Account Number \n\nFormat: 32003000"
-  //   );
-  //   agent.end("");
-  // }
+  function getPaymentsAccountNumber(agent) {
+    agent.add(
+      "Welcome to the payments portal. \n\nTo proceed with your rates payment, may we have your House Account Number \n\nFormat: 32003000"
+    );
+    agent.end("");
+  }
 
-  // function getPaymentsPhone(agent) {
-  //   agent.add("May we have your phone number? \n\nFormat 0779545334");
-  //   agent.end("");
-  // }
+  function getPaymentsPhone(agent) {
+    agent.add("May we have your phone number? \n\nFormat 0779545334");
+    agent.end("");
+  }
 
-  // function getPaymentsEmail(agent) {
-  //   agent.add("May we have your email address? \n\nExample: vfm@example.com");
-  //   agent.end("");
-  // }
+  function getPaymentsEmail(agent) {
+    agent.add("May we have your email address? \n\nExample: vfm@example.com");
+    agent.end("");
+  }
 
-  // function getPaymentsAccount(agent) {
-  //   agent.add("May we have your mobile money number eg 07XXXXXXXX");
+  function getPaymentsAccount(agent) {
+    agent.add("May we have your mobile money number eg 07XXXXXXXX");
 
-  //   // return phoneAccount;
-  // }
+    // return phoneAccount;
+  }
 
-  // function getPaymentsOption(agent) {
-  //   /*
-  //   agent.context.set({
-  //     'name':'backend-captured-email',
-  //     'lifespan': 5,
-  //     'parameters':{
-  //       'email':agent.query
-  //       }
-  //   });
-  //   */
-  //   agent.add("Which payment method would you like to use?");
-  //   agent.add(new Suggestion("ecocash"));
-  //   agent.add(new Suggestion("onemoney"));
-  //   agent.add(new Suggestion("telecash"));
-  //   agent.end("");
-  // }
+  function getPaymentsOption(agent) {
+    /*
+    agent.context.set({
+      'name':'backend-captured-email',
+      'lifespan': 5,
+      'parameters':{
+        'email':agent.query
+        }
+    });
+    */
+    agent.add("Which payment method would you like to use?");
+    agent.add(new Suggestion("ecocash"));
+    agent.add(new Suggestion("onemoney"));
+    agent.add(new Suggestion("telecash"));
+    agent.end("");
+  }
 
-  // function getPaymentsAmount(agent) {
-  //   agent.add("Amount to be paid in ZWL e.g 500.90");
-  //   agent.end("");
-  // }
+  function getPaymentsAmount(agent) {
+    agent.add("Amount to be paid in ZWL e.g 500.90");
+    agent.end("");
+  }
 
-  // // --unhandled-rejections=strict
+  // --unhandled-rejections=strict
 
-  // // <<<<<<< paymentsHack
-  // //     str = y + m + d;
-  // //     return str;
-  // //   }
-
-  // async function checkPaymentStatus(agent) {
-  //   const pollUrl = agent.context.get("capture_payment_status_information")
-  //     .parameters.pollUrl;
-  //   const amount = agent.context.get("capture_payment_status_information")
-  //     .parameters.amount;
-  //   const invoiceNumber = agent.context.get(
-  //     "capture_payment_status_information"
-  //   ).parameters.invoiceNumber;
-  //   let paynow = new Paynow(paynow_id, paynow_key);
-  //   let response = await paynow.pollTransaction(pollUrl);
-  //   let status = await response.status;
-  //   if (
-  //     status === "paid" ||
-  //     status == "awaiting delivery" ||
-  //     status == "delivered"
-  //   ) {
-  //     agent.add(
-  //       "You have successfully paid $" +
-  //         amount.amount +
-  //         ". Your invoice number is " +
-  //         invoiceNumber +
-  //         "."
-  //     );
-  //   } else {
-  //     if (
-  //       status == "cancelled" ||
-  //       status == "refunded" ||
-  //       status == "disputed"
-  //     ) {
-  //       agent.add("Rate payment transaction successfully cancelled!");
-  //     } else if (status == "sent" || status == "pending" || status == "created")
-  //       agent.add("You have not completed your payment!");
-  //     //set_checkPaymentStatus(agent, stage+1, pollUrl);
+  // <<<<<<< paymentsHack
+  //     str = y + m + d;
+  //     return str;
   //   }
-  // }
 
-  // async function processPayment(agent) {
-  //   //generate a new invoice number
-  //   const invoiceNumber = generateInvoiceNumber();
-  //   const accountNumber = agent.context.get("payment-followup").parameters
-  //     .accountNumber;
-  //   const phone = agent.context.get("paymentphone").parameters["phone-number"];
-  //   const phoneAccount = agent.context.get("getpaymentsaccount-followup")
-  //     .parameters.phoneAccount;
-  //   const paymentOption = agent.context.get("getpaymentsoption-followup")
-  //     .parameters.paymentOption;
-  //   const amount = agent.context.get("getpaymentsamount-followup").parameters
-  //     .amount;
-  //   const email = agent.context.get("getpaymentsemail-followup").parameters
-  //     .email;
+  async function checkPaymentStatus(agent) {
+    const pollUrl = agent.context.get("capture_payment_status_information")
+      .parameters.pollUrl;
+    const amount = agent.context.get("capture_payment_status_information")
+      .parameters.amount;
+    const invoiceNumber = agent.context.get(
+      "capture_payment_status_information"
+    ).parameters.invoiceNumber;
+    let paynow = new Paynow(paynow_id, paynow_key);
+    let response = await paynow.pollTransaction(pollUrl);
+    let status = await response.status;
+    if (
+      status === "paid" ||
+      status == "awaiting delivery" ||
+      status == "delivered"
+    ) {
+      agent.add(
+        "You have successfully paid $" +
+          amount.amount +
+          ". Your invoice number is " +
+          invoiceNumber +
+          "."
+      );
+    } else {
+      if (
+        status == "cancelled" ||
+        status == "refunded" ||
+        status == "disputed"
+      ) {
+        agent.add("Rate payment transaction successfully cancelled!");
+      } else if (status == "sent" || status == "pending" || status == "created")
+        agent.add("You have not completed your payment!");
+      //set_checkPaymentStatus(agent, stage+1, pollUrl);
+    }
+  }
 
-  //   //save the id
-  //   const id = uuid_v4();
-  //   const date = new Date();
+  async function processPayment(agent) {
+    //generate a new invoice number
+    const invoiceNumber = generateInvoiceNumber();
+    const accountNumber = agent.context.get("payment-followup").parameters
+      .accountNumber;
+    const phone = agent.context.get("paymentphone").parameters["phone-number"];
+    const phoneAccount = agent.context.get("getpaymentsaccount-followup")
+      .parameters.phoneAccount;
+    const paymentOption = agent.context.get("getpaymentsoption-followup")
+      .parameters.paymentOption;
+    const amount = agent.context.get("getpaymentsamount-followup").parameters
+      .amount;
+    const email = agent.context.get("getpaymentsemail-followup").parameters
+      .email;
 
-  //   let paynow = new Paynow("11718", "02d7ceaf-ee6a-4390-a1a8-05b9db3d68b0");
-  //   // Testing
-  //   console.log(
-  //     `Invoice Number: ${invoiceNumber} \nHouse Account #: ${accountNumber} \nPhone: ${phone} \nPayment Account: ${phoneAccount} \nPayment Option: ${paymentOption} \nAmount: $${amount.amount} \nEmail: ${email}`
-  //   );
+    //save the id
+    const id = uuid_v4();
+    const date = new Date();
 
-  //   //     let paynow = new Paynow("11734", "0586e460-df4b-409b-948b-940c0fd485fb");
+    let paynow = new Paynow("11718", "02d7ceaf-ee6a-4390-a1a8-05b9db3d68b0");
+    // Testing
+    console.log(
+      `Invoice Number: ${invoiceNumber} \nHouse Account #: ${accountNumber} \nPhone: ${phone} \nPayment Account: ${phoneAccount} \nPayment Option: ${paymentOption} \nAmount: $${amount.amount} \nEmail: ${email}`
+    );
 
-  //   //Set return and return urls
-  //   paynow.resultUrl = "http://example.com/gateways/paynow/update";
-  //   paynow.returnUrl =
-  //     "http://example.com/return?gateway=paynow&merchantReference=1234";
+    //     let paynow = new Paynow("11734", "0586e460-df4b-409b-948b-940c0fd485fb");
 
-  //   // create a new payment
-  //   let payment = paynow.createPayment(invoiceNumber, email);
+    //Set return and return urls
+    paynow.resultUrl = "http://example.com/gateways/paynow/update";
+    paynow.returnUrl =
+      "http://example.com/return?gateway=paynow&merchantReference=1234";
 
-  //   // let account = accountNumber;
-  //   // let option = paymentOption;
+    // create a new payment
+    let payment = paynow.createPayment(invoiceNumber, email);
 
-  //   payment.add("Rates", parseFloat(amount.amount));
+    // let account = accountNumber;
+    // let option = paymentOption;
 
-  //   response = await paynow.sendMobile(payment, phoneAccount, paymentOption);
-  //   if (response.success) {
-  //     var paynowReference = response.pollUrl;
-  //     agent.add(
-  //       "A popup will appear, enter your pin number to complete the payment. After making your payment, click CHECK PAYMENT STATUS"
-  //     );
-  //     agent.add(new Suggestion("Check payment status"));
-  //     /*agent.add(
-  //       "You have successfully paid $" +
-  //         amount.amount +
-  //         ". Your invoice number is " +
-  //         invoiceNumber + ". The paynow reference is " + paynowReference
-  //     );*/
+    payment.add("Rates", parseFloat(amount.amount));
 
-  //     agent.context.set("capture_payment_status_information", 5, {
-  //       pollUrl: paynowReference,
-  //       invoiceNumber: invoiceNumber,
-  //       amount: amount,
-  //     });
-  //     /*
-  //     //save the id
-  //     var id = uuid();
+    response = await paynow.sendMobile(payment, phoneAccount, paymentOption);
+    if (response.success) {
+      var paynowReference = response.pollUrl;
+      agent.add(
+        "A popup will appear, enter your pin number to complete the payment. After making your payment, click CHECK PAYMENT STATUS"
+      );
+      agent.add(new Suggestion("Check payment status"));
+      /*agent.add(
+        "You have successfully paid $" +
+          amount.amount +
+          ". Your invoice number is " +
+          invoiceNumber + ". The paynow reference is " + paynowReference
+      );*/
 
-  //     // save to db
-  //     return db
-  //       .collection("Rates")
-  //       .add({
-  //         id: id,
-  //         invoiceNumber: invoiceNumber,
-  //         accountNumber: accountNumber,
-  //         phone: phone,
-  //         phoneAccount: phoneAccount,
-  //         paymentOption: paymentOption,
-  //         amount: amount,
-  //         paynowReference: paynowReference,
-  //         email: email,
-  //         date: date,
-  //       })
-  //       .then((ref) => console.log("Success"));*/
-  //   } else {
-  //     agent.add("Whoops something went wrong!");
-  //     console.log(response.error);
-  //   }
-  //   // =======
-  //   paynow
-  //     .sendMobile(payment, phoneAccount, paymentOption)
-  //     .then((response) => {
-  //       if (response.success) {
-  //         // These are the instructions to show the user.
-  //         // Instruction for how the user can make a payment
-  //         // Get the link to redirect the user to, then use it as you see fit
-  //         let link = response.redirectUrl;
+      agent.context.set("capture_payment_status_information", 5, {
+        pollUrl: paynowReference,
+        invoiceNumber: invoiceNumber,
+        amount: amount,
+      });
+      /*
+      //save the id
+      var id = uuid();
 
-  //         let instructions = response.instructions;
+      // save to db
+      return db
+        .collection("Rates")
+        .add({
+          id: id,
+          invoiceNumber: invoiceNumber,
+          accountNumber: accountNumber,
+          phone: phone,
+          phoneAccount: phoneAccount,
+          paymentOption: paymentOption,
+          amount: amount,
+          paynowReference: paynowReference,
+          email: email,
+          date: date,
+        })
+        .then((ref) => console.log("Success"));*/
+    } else {
+      agent.add("Whoops something went wrong!");
+      console.log(response.error);
+    }
+    // =======
+    paynow
+      .sendMobile(payment, phoneAccount, paymentOption)
+      .then((response) => {
+        if (response.success) {
+          // These are the instructions to show the user.
+          // Instruction for how the user can make a payment
+          // Get the link to redirect the user to, then use it as you see fit
+          let link = response.redirectUrl;
 
-  //         console.log(instructions);
-  //         // pollUrl for the transaction
-  //         let paynowReference = response.pollUrl;
+          let instructions = response.instructions;
 
-  //         //Telegram Output
-  //         agent.add(
-  //           "You have successfully paid $" +
-  //             amount.amount +
-  //             ". Your invoice number is " +
-  //             invoiceNumber +
-  //             ". The paynow reference is " +
-  //             paynowReference
-  //         );
+          console.log(instructions);
+          // pollUrl for the transaction
+          let paynowReference = response.pollUrl;
 
-  //         //save
-  //         return db
-  //           .collection("Rates")
-  //           .add({
-  //             id: id,
-  //             invoiceNumber: invoiceNumber,
-  //             accountNumber: accountNumber,
-  //             phone: phone,
-  //             phoneAccount: phoneAccount,
-  //             paymentOption: paymentOption,
-  //             amount: amount,
-  //             paynowReference: paynowReference,
-  //             email: email,
-  //             date: date,
-  //           })
-  //           .then((ref) => console.log("Transaction successful"));
-  //       } else {
-  //         agent.add("Whoops something went wrong!");
-  //         console.log(response.error);
-  //       }
-  //     })
-  //     .catch((ex) => {
-  //       console.log("Something didn't go quite right", ex);
-  //     });
-  // }
+          //Telegram Output
+          agent.add(
+            "You have successfully paid $" +
+              amount.amount +
+              ". Your invoice number is " +
+              invoiceNumber +
+              ". The paynow reference is " +
+              paynowReference
+          );
+
+          //save
+          return db
+            .collection("Rates")
+            .add({
+              id: id,
+              invoiceNumber: invoiceNumber,
+              accountNumber: accountNumber,
+              phone: phone,
+              phoneAccount: phoneAccount,
+              paymentOption: paymentOption,
+              amount: amount,
+              paynowReference: paynowReference,
+              email: email,
+              date: date,
+            })
+            .then((ref) => console.log("Transaction successful"));
+        } else {
+          agent.add("Whoops something went wrong!");
+          console.log(response.error);
+        }
+      })
+      .catch((ex) => {
+        console.log("Something didn't go quite right", ex);
+      });
+  }
 
   // let's setup intentMaps
   var intentMap = new Map();
